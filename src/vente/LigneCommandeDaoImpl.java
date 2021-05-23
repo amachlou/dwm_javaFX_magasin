@@ -15,21 +15,21 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import produit.Produit;
 
-public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
+public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeDAO{
 
 	@Override
-	public void add(Vente obj) {
+	public void add(LigneCommande obj) {
 		
 		PreparedStatement pst=null;
-		String query="insert into vente (date,total,id_client) values(?,?,?)";
+		String query="insert into lignecommande (qte,sous_total,id_produit,id_vente) values(?,?,?,?)";
 		
 		try {
 			
 			pst=connection.prepareStatement(query);
-			Date date=Date.valueOf(obj.getDate());
-			pst.setDate(1,date);
-			pst.setDouble(2, obj.getTotal());
-			pst.setLong(3, obj.getId_client());
+			pst.setInt(1,obj.getQte());
+			pst.setDouble(2, obj.getSous_total());
+			pst.setLong(3, obj.getId_produit());
+			pst.setLong(4, obj.getId_vente());
 			pst.executeUpdate();
 		
 		} catch (SQLException e) {
@@ -40,17 +40,16 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 	}
 
 	@Override
-	public void update(Vente obj) {
+	public void update(LigneCommande obj) {
 		PreparedStatement pst=null;
-		String query="UPDATE vente set date=?,total=?,id_client=?  WHERE id_vente=?";
+		String query="UPDATE lignecommande set qte=?,sous_total=?,id_produit=?,id_vente=?  WHERE id_cmd=?";
 		
 		try {
 			
 			pst=connection.prepareStatement(query);
-			Date date=Date.valueOf(obj.getDate());
-			pst.setDate(1,date);
-			pst.setDouble(2, obj.getTotal());
-			pst.setLong(3, obj.getId_client());
+			pst.setInt(1,obj.getQte());
+			pst.setDouble(2, obj.getSous_total());
+			pst.setLong(3, obj.getId_produit());
 			pst.setLong(4, obj.getId_vente());
 			pst.executeUpdate();
 		
@@ -65,7 +64,7 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 	public void delete(long id) {
 		PreparedStatement pst=null;
 		ResultSet rs;
-		String query="delete from vente where id_vente =?";
+		String query="delete from lignecommande where id_cmd =?";
 		
 		try {
 			
@@ -81,11 +80,11 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 	}
 
 	@Override
-	public Vente getOne(long id) {
-		List<Vente> list =new ArrayList<Vente>();
+	public LigneCommande getOne(long id) {
+		List<LigneCommande> list =new ArrayList<LigneCommande>();
 		PreparedStatement pst=null;
 		ResultSet rs;
-		String query="select * from vente where id_vente =?";
+		String query="select * from lignecommande where id_cmd =?";
 		
 		try {
 			
@@ -93,8 +92,7 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 			pst.setLong(1, id);
 			rs=pst.executeQuery();
 			if(rs.next()) {
-				Date date =rs.getDate("date");
-				return new Vente(rs.getLong("id_vente"),date.toLocalDate(),rs.getDouble("total"),rs.getLong("id_client"));
+				return new LigneCommande(rs.getLong("id_cmd"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente"));
 			}
 		
 		} catch (SQLException e) {
@@ -106,19 +104,18 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 	}
 
 	@Override
-	public List<Vente> getAll() {
-		List<Vente> list =new ArrayList<Vente>();
+	public List<LigneCommande> getAll() {
+		List<LigneCommande> list =new ArrayList<LigneCommande>();
 		PreparedStatement pst=null;
 		ResultSet rs;
-		String query="select * from vente";
+		String query="select * from lignecommande";
 		
 		try {
 			
 			pst=connection.prepareStatement(query);
 			rs=pst.executeQuery();
 			while(rs.next()) {
-				Date date =rs.getDate("date");
-				list.add(new Vente(rs.getLong("id_vente"),date.toLocalDate(),rs.getDouble("total"),rs.getLong("id_client")));
+				list.add(new LigneCommande(rs.getLong("id_cmd"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente")));
 			}
 		
 		} catch (SQLException e) {
@@ -128,15 +125,14 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 		
 		return list;
 	}
-	
 
 	@Override
-	public List<Vente> getAll(String text) {
-		List<Vente> list =new ArrayList<Vente>();
+	public List<LigneCommande> getAll(String text) {
+		List<LigneCommande> list =new ArrayList<LigneCommande>();
 		PreparedStatement pst=null;
 		ResultSet rs;
-		String query="select * from vente where nom like ?";
-//		(select * from vente v,client c where v.id_client=c.id_client and date BETWEEN '5/5/2008' and '4/4/2008' or c.nom like 'mohamed' or id_vente=1)
+		String query="select * from lignecommande where nom like ?";
+
 		try {
 			
 			pst=connection.prepareStatement(query);
@@ -144,7 +140,7 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 			rs=pst.executeQuery();
 			while(rs.next()) {
 				Date date =rs.getDate("date");
-				list.add(new Vente(rs.getLong("id_vente"),date.toLocalDate(),rs.getDouble("total"),rs.getLong("id_client")));
+				list.add(new LigneCommande(rs.getLong("id_cmd"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente")));
 			}
 		
 		} catch (SQLException e) {

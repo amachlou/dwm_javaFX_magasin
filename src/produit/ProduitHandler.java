@@ -5,24 +5,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import application.GestionVentes;
 import application.ListeProduits;
 import javafx.scene.control.Label;
 
 public class ProduitHandler {
 	
 	ListeProduits listProduit=null;
+	GestionVentes gestionVente=null;
 	IProduitDAO pdao=new ProduitDaoImpl();
 
 	public ProduitHandler(ListeProduits listProduit) {
 		this.listProduit=listProduit;
 	}
 	
+	public ProduitHandler() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void updateListProduits() {
 		
 		
 		List<Produit> list=pdao.getAll();
 		listProduit.produitObservableList.addAll(list);
-
 		calculerTotal();
 	}
 	

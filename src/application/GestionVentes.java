@@ -3,6 +3,8 @@
 	
 	import java.time.LocalDate;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 	import javafx.scene.control.Button;
@@ -13,7 +15,8 @@ import javafx.scene.Scene;
 	import javafx.scene.control.TableColumn;
 	import javafx.scene.control.TableView;
 	import javafx.scene.control.TextField;
-	import javafx.scene.image.Image;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 	import javafx.scene.layout.VBox;
@@ -24,12 +27,20 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import produit.Produit;
+import produit.ProduitHandler;
+import vente.LigneCommande;
+import vente.VenteHandler;
 
 	public class GestionVentes {
 	
-		NouveauProduit ajoutProduit;
-		ListeProduits listProduit;
+		VenteHandler handler=new VenteHandler(this);
+		
+		
+		public ListeProduits listProduit;
 		NouveauClient ajoutClient;
+		ListeClients listClient;
+		ProduitHandler pHandler=new ProduitHandler(listProduit);
+		
 		
 		VBox root =new VBox();
 		HBox hboxCenter=new HBox();
@@ -47,22 +58,27 @@ import produit.Produit;
 		Stage window =new Stage();
 	
 		
-		TableColumn<Commande,Long> idCmdColumn;
-		TableColumn<Commande,String> designationCmdColumn;
-		TableColumn<Commande,Double> prixCmdColumn;
-		TableColumn<Commande,Integer> qteCmdColumn;
-		TableColumn<Commande,LocalDate> sousTotalColumn;
+		TableColumn<LigneCommande,Long> idCmdColumn;
+		TableColumn<LigneCommande,String> designationCmdColumn;
+		TableColumn<LigneCommande,Double> prixCmdColumn;
+		TableColumn<LigneCommande,Integer> qteCmdColumn;
+		TableColumn<LigneCommande,LocalDate> sousTotalColumn;
 		
-		TableView <Commande> commandeList;
+		TableView <LigneCommande> commandeList;
 		
 		
-		TableColumn<Produit,Long> idColumn;
-		TableColumn<Produit,String> designationColumn;
-		TableColumn<Produit,Double> prixColumn;
-		TableColumn<Produit,Integer> qteColumn;
-		TableColumn<Produit,LocalDate> dateColumn;
+		TableColumn<Produit, Long> idColumn=new TableColumn<>("Id");
+		TableColumn<Produit, String> designationColumn=new TableColumn<>("Designation");
+		TableColumn<Produit, Double> prixColumn=new TableColumn<>("Prix");
+		TableColumn<Produit, Integer> qteColumn=new TableColumn<>("Qte");
+		TableColumn<Produit, LocalDate> dateColumn=new TableColumn<>("Date");
 		
-		TableView <Produit> produitList;
+		
+		public TableView <Produit> produitList=new TableView<>();
+
+		
+		public ObservableList<Produit> produitObservableList= FXCollections.observableArrayList();
+	
 		
 		MenuBar menuBar;
 		Menu produitsMenu;
@@ -105,10 +121,10 @@ import produit.Produit;
 		
 		TextField numVenteInput;
 //		TextField clientInput;
-		Label lblClientInput;
+		public Label lblClientInput;
 		TextField dateInput;
 		
-		TextField codeCmdInput;
+		public Label lblcodeCmd;
 		TextField designationInput;
 		TextField prixInput;
 		TextField qteInput;
@@ -208,7 +224,7 @@ import produit.Produit;
 			
 			lblNumVente = new Label("N°:");
 			lblNomClient=new Label("Client: ");
-			lblClientInput=new Label("Jiahne Arfi");
+			lblClientInput=new Label("");
 			lblDate=new Label("Date:");
 			
 			lblCodeCmd=new Label("Code.c:");
@@ -224,7 +240,7 @@ import produit.Produit;
 			qteInput= new TextField();
 			dateInput= new TextField();
 			prixInput=new TextField();
-			codeCmdInput= new TextField();
+			lblcodeCmd= new Label();
 //			clientInput=new TextField();
 		
 			
@@ -243,12 +259,7 @@ import produit.Produit;
 			nouveauFacture=new Button("Reglement");
 			listFactures=new Button("Annuler");
 			
-			
-			idColumn=new TableColumn<>("Id");
-			designationColumn=new TableColumn<>("Designation");
-			prixColumn=new TableColumn<>("Prix");
-			qteColumn=new TableColumn<>("Qte");
-			dateColumn=new TableColumn<>("Date");
+	
 			
 			idColumn.setPrefWidth(100);
 			designationColumn.setPrefWidth(400);
@@ -256,10 +267,29 @@ import produit.Produit;
 			qteColumn.setPrefWidth(140);
 			dateColumn.setPrefWidth(240);
 			
-			produitList=new TableView<>();
+	
 			produitList.setPrefSize( 0, 450);			
 			produitList.getColumns().addAll(idColumn,
 			designationColumn,prixColumn,qteColumn,dateColumn);
+			
+			
+			produitList.setItems(produitObservableList);
+			
+			idColumn.setCellValueFactory(
+				    new PropertyValueFactory<Produit,Long>("id_produit")
+				);
+			designationColumn.setCellValueFactory(
+				    new PropertyValueFactory<Produit,String>("designation")
+				);
+			qteColumn.setCellValueFactory(
+				    new PropertyValueFactory<Produit,Integer>("qte")
+				);
+			prixColumn.setCellValueFactory(
+				    new PropertyValueFactory<Produit,Double>("prix")
+				);
+			dateColumn.setCellValueFactory(
+				    new PropertyValueFactory<Produit,LocalDate>("date")
+				);
 			
 			
 			
@@ -289,7 +319,7 @@ import produit.Produit;
 		    
 		    
 		    grid2.add(lblCodeCmd, 0, 0); 
-		    grid2.add(codeCmdInput, 1, 0); 
+		    grid2.add(lblcodeCmd, 1, 0); 
 		    grid2.add(lblDesignation, 0, 1);       
 		    grid2.add(designationInput, 1, 1); 
 		    grid2.add(lblPrix, 0, 2);
@@ -385,7 +415,7 @@ import produit.Produit;
 			dateInput.getStyleClass().addAll("fontListe","inputFont"); 
 //			TextField clientInput.getStyleClass().addAll("fontListe","inputFont"); 
 			lblClientInput.getStyleClass().addAll("fontListe","inputFont");
-			codeCmdInput.getStyleClass().addAll("fontListe","inputFont");
+			lblcodeCmd.getStyleClass().addAll("fontListe","inputFont");
 			designationInput.getStyleClass().addAll("fontListe","inputFont");
 			
 		
@@ -412,10 +442,7 @@ import produit.Produit;
 		}
 		
 		private void addEvent() {
-			newProduit.setOnAction(event ->{
-				ajoutProduit= new NouveauProduit();
-				window.close();
-			});
+
 			listProduits.setOnAction(event ->{
 				listProduit= new ListeProduits();
 				window.close();
@@ -424,6 +451,11 @@ import produit.Produit;
 				ajoutClient= new NouveauClient();
 				window.close();
 			});
+			listClients.setOnAction(event ->{
+				listClient= new ListeClients();
+				window.close();
+			});
+			
 			
 		}
 		

@@ -29,10 +29,12 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import produit.Produit;
 import produit.ProduitHandler;
+import vente.VenteHandler;
 
 	public class ListeClients {
 	
-		ClientHandler handler=new ClientHandler(this);
+		ClientHandler clientHandler=new ClientHandler(this);
+		VenteHandler venteHandler;
 		
 		NouveauProduit ajoutProduit;
 		ListeProduits listProduit;
@@ -91,7 +93,7 @@ import produit.ProduitHandler;
 		Label lblTel;
 		Label lblEmail;
 		
-		public TextField IdClientInput;
+		public Label lblIdClient;
 		public TextField NomInput;
 		public TextField PrenomInput;
 		public TextField TelInput;
@@ -189,7 +191,7 @@ import produit.ProduitHandler;
 			lblTel=new Label("Telephone : ");
 			lblEmail =new Label("Email : ");
 			
-			IdClientInput= new TextField();
+			lblIdClient= new Label();
 			NomInput= new TextField();
 			PrenomInput= new TextField();
 			TelInput= new TextField();
@@ -257,7 +259,7 @@ import produit.ProduitHandler;
 			vboxCenter2.getChildren().addAll(lblrecherche,rechercheInput,clientList);
 			hboxCenter.getChildren().addAll(vboxCenter,vboxCenter2);
 			hboxBtn.getChildren().addAll(ajouterBtn,modifierBtn,supprimerBtn,rechercheBtn,annulerBtn);
-			vboxCenter.getChildren().addAll(lblNumClient,IdClientInput,lblNom,NomInput,
+			vboxCenter.getChildren().addAll(lblNumClient,lblIdClient,lblNom,NomInput,
 			lblPrenom,PrenomInput,lblTel,TelInput,lblEmail,EmailInput);
 			hboxActions.getChildren().addAll(nouveauVente,listVentes,nouveauFacture,
 		    listFactures);
@@ -314,7 +316,7 @@ import produit.ProduitHandler;
 			rechercheInput.getStyleClass().addAll("fontListe","inputFont"); 
 			lblrecherche.getStyleClass().addAll("font");
 			 
-			IdClientInput.getStyleClass().addAll("font","inputFont"); 
+			lblIdClient.getStyleClass().addAll("font","inputFont"); 
 			NomInput.getStyleClass().addAll("font","inputFont"); 
 			PrenomInput.getStyleClass().addAll("font","inputFont");
 			TelInput.getStyleClass().addAll("font","inputFont");
@@ -335,7 +337,7 @@ import produit.ProduitHandler;
 		}
 		
 		private void emptyInput() {
-			IdClientInput.setText(""); 
+			lblIdClient.setText(""); 
 			NomInput.setText(""); 
 			PrenomInput.setText(""); 
 			TelInput.setText(""); 
@@ -358,6 +360,7 @@ import produit.ProduitHandler;
 			});
 			nouveauVente.setOnAction(event ->{
 				gestionventes = new GestionVentes();
+				gestionventes.lblClientInput.setText(NomInput.getText()+" "+PrenomInput.getText());				
 				window.close();
 			});
 			nouveauFacture.setOnAction(event ->{
@@ -365,9 +368,9 @@ import produit.ProduitHandler;
 				window.close();
 			});
 			ajouterBtn.setOnAction(event ->{
-				handler.addClick();
+				clientHandler.addClick();
 				clientList.getItems().clear();
-				handler.updateListClients();
+				clientHandler.updateListClients();
 				emptyInput();
 				
 			});
@@ -377,27 +380,27 @@ import produit.ProduitHandler;
 			});
 			
 			supprimerBtn.setOnAction(event ->{
-				handler.remove();
+				clientHandler.remove();
 				clientList.getSelectionModel().clearSelection();
 				clientList.getItems().clear();
-				handler.updateListClients();
+				clientHandler.updateListClients();
 				emptyInput();
 			});
 			
 			modifierBtn.setOnAction(event ->{
-				handler.modify();
+				clientHandler.modify();
 				clientList.getItems().clear();
-				handler.updateListClients();
+				clientHandler.updateListClients();
 				emptyInput();
 			});
 			
 			clientList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-				handler.selectItem();
+				clientHandler.selectItem();
 			});
 			
 			rechercheBtn.setOnAction(event ->{
 				clientList.getItems().clear();
-				handler.search();
+				clientHandler.search();
 				emptyInput();
 			});
 			
@@ -409,7 +412,7 @@ import produit.ProduitHandler;
 			
 			initWindow();
 			createCompnents();
-			handler.updateListClients();
+			clientHandler.updateListClients();
 			addNodestoPane();
 			addStyleToNodes();
 			addEvent();

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import application.GestionVentes;
 import application.ListeClients;
 import application.ListeClients;
 import javafx.scene.control.Label;
@@ -53,7 +54,7 @@ public class ClientHandler {
 		String tel=c.getTel();
 		String email=c.getEmail();
 		
-		listClient.IdClientInput.setText(id+"");
+		listClient.lblIdClient.setText(id+"");
 		listClient.NomInput.setText(nom);
 		listClient.PrenomInput.setText(prenom);
 		listClient.TelInput.setText(tel);
@@ -62,7 +63,7 @@ public class ClientHandler {
 	}
 	public void modify() {
 		
-		String id=listClient.IdClientInput.getText();
+		String id=listClient.lblIdClient.getText();
 		String nom=listClient.NomInput.getText();
 		String prenom=listClient.PrenomInput.getText();
 		String tel=listClient.TelInput.getText();

@@ -65,7 +65,7 @@ public class Main extends Application {
 	private StackPane stack=new StackPane();
 	private Scene scene =new Scene(root);
 	Label usernameLabel=new Label("Username");
-	public TextField userInput=new TextField();
+	public TextField userInput=new TextField("jihane");
 	Label passwordLabel=new Label("Password");
 	public PasswordField passwordInput=new PasswordField();
 	Button loginBtn = new Button("Login");

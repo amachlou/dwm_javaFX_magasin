@@ -43,7 +43,7 @@ import produit.ProduitHandler;
 		ListeProduits listProduit;
 		NouveauClient ajoutClient;
 		ListeClients listClient;
-	
+		GestionVentes gestionVente;
 		
 		
 		VBox root =new VBox();
@@ -230,8 +230,9 @@ import produit.ProduitHandler;
 			designationColumn,qteColumn,prixColumn,dateColumn);
 			
 			produitList.setItems(produitObservableList);
-			
-			
+			gestionVente=new GestionVentes();
+			gestionVente.produitList.setItems(produitObservableList);
+
 			idColumn.setCellValueFactory(
 				    new PropertyValueFactory<Produit,Long>("id_produit")
 				);
@@ -367,6 +368,7 @@ import produit.ProduitHandler;
 				listClient= new ListeClients();
 				window.close();
 			});
+			
 			
 			ajouterBtn.setOnAction(event ->{
 				handler.addClick();
