@@ -21,15 +21,17 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 	public void add(LigneCommande obj) {
 		
 		PreparedStatement pst=null;
-		String query="insert into lignecommande (qte,sous_total,id_produit,id_vente) values(?,?,?,?)";
+		String query="insert into lignecommande (designation,prix,qte,sous_total,id_produit,id_vente)values(?,?,?,?,?,?)";
 		
 		try {
 			
 			pst=connection.prepareStatement(query);
-			pst.setInt(1,obj.getQte());
-			pst.setDouble(2, obj.getSous_total());
-			pst.setLong(3, obj.getId_produit());
-			pst.setLong(4, obj.getId_vente());
+			pst.setString(1, obj.getDesignation());
+			pst.setDouble(2, obj.getPrix());
+			pst.setInt(3,obj.getQte());
+			pst.setDouble(4, obj.getSous_total());
+			pst.setLong(5, obj.getId_produit());
+			pst.setLong(6, obj.getId_vente());
 			pst.executeUpdate();
 		
 		} catch (SQLException e) {
@@ -42,15 +44,18 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 	@Override
 	public void update(LigneCommande obj) {
 		PreparedStatement pst=null;
-		String query="UPDATE lignecommande set qte=?,sous_total=?,id_produit=?,id_vente=?  WHERE id_cmd=?";
+		String query="UPDATE lignecommande set designation=?,prix=? qte=?,sous_total=?,id_produit=?,id_vente=?  WHERE id_cmd=?";
 		
 		try {
 			
 			pst=connection.prepareStatement(query);
-			pst.setInt(1,obj.getQte());
-			pst.setDouble(2, obj.getSous_total());
-			pst.setLong(3, obj.getId_produit());
-			pst.setLong(4, obj.getId_vente());
+			pst.setString(1,obj.getDesignation());
+			pst.setDouble(3, obj.getPrix());
+			pst.setInt(2,obj.getQte());
+			pst.setDouble(3, obj.getSous_total());
+			pst.setLong(4, obj.getId_commande());
+			pst.setLong(5, obj.getId_produit());
+			pst.setLong(6, obj.getId_vente());
 			pst.executeUpdate();
 		
 		} catch (SQLException e) {
@@ -92,7 +97,7 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 			pst.setLong(1, id);
 			rs=pst.executeQuery();
 			if(rs.next()) {
-				return new LigneCommande(rs.getLong("id_cmd"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente"));
+				return new LigneCommande(rs.getLong("id_cmd"),rs.getString("designation"),rs.getDouble("prix"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente"));
 			}
 		
 		} catch (SQLException e) {
@@ -115,7 +120,7 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 			pst=connection.prepareStatement(query);
 			rs=pst.executeQuery();
 			while(rs.next()) {
-				list.add(new LigneCommande(rs.getLong("id_cmd"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente")));
+				list.add(new LigneCommande(rs.getLong("id_cmd"),rs.getString("designation"),rs.getDouble("prix"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente")));
 			}
 		
 		} catch (SQLException e) {
@@ -131,7 +136,7 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 		List<LigneCommande> list =new ArrayList<LigneCommande>();
 		PreparedStatement pst=null;
 		ResultSet rs;
-		String query="select * from lignecommande where nom like ?";
+		String query="select * from lignecommande where designation like ?";
 
 		try {
 			
@@ -139,8 +144,7 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 			pst.setString(1, text+"%");
 			rs=pst.executeQuery();
 			while(rs.next()) {
-				Date date =rs.getDate("date");
-				list.add(new LigneCommande(rs.getLong("id_cmd"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente")));
+				list.add(new LigneCommande(rs.getLong("id_cmd"),rs.getString("designation"),rs.getDouble("prix"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente")));
 			}
 		
 		} catch (SQLException e) {

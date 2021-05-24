@@ -230,8 +230,7 @@ import produit.ProduitHandler;
 			designationColumn,qteColumn,prixColumn,dateColumn);
 			
 			produitList.setItems(produitObservableList);
-			gestionVente=new GestionVentes();
-			gestionVente.produitList.setItems(produitObservableList);
+
 
 			idColumn.setCellValueFactory(
 				    new PropertyValueFactory<Produit,Long>("id_produit")

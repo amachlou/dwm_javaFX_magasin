@@ -18,20 +18,26 @@ public class ProduitHandler {
 	public ProduitHandler(ListeProduits listProduit) {
 		this.listProduit=listProduit;
 	}
-	
-	public ProduitHandler() {
-		// TODO Auto-generated constructor stub
+	public ProduitHandler(GestionVentes gestionVente) {
+		this.gestionVente=gestionVente;
 	}
+	
 
 	public void updateListProduits() {
-		
 		
 		List<Produit> list=pdao.getAll();
 		listProduit.produitObservableList.addAll(list);
 		calculerTotal();
 	}
 	
+	public void updateListVente() {
+		List<Produit> list=pdao.getAll();
+		gestionVente.produitObservableList.addAll(list);
+		
+	}
 	
+	
+
 	public void calculerTotal() {
 	
 		double total=0;
@@ -47,7 +53,7 @@ public class ProduitHandler {
 		
 		String designation=listProduit.designationInput.getText();
 		int qte=Integer.valueOf(listProduit.qteInput.getText());
-		double prix=Integer.valueOf(listProduit.prixInput.getText());
+		double prix=Double.valueOf(listProduit.prixInput.getText());
 		LocalDate date=listProduit.dateInput.getValue();	
 		Produit p=new Produit(0,designation,qte,prix,date);
 		pdao.add(p);
@@ -74,6 +80,18 @@ public class ProduitHandler {
 		listProduit.qteInput.setText(qte+"");
 		listProduit.prixInput.setText(prix+"");
 		listProduit.dateInput.setValue(date);
+		
+	}
+	
+	public void selectItemVente() {
+		Produit p = gestionVente.produitList.getSelectionModel().getSelectedItem();
+		long id_produit=p.getId_produit();
+		String designation = p.getDesignation();
+		double prix = p.getPrix();
+		
+		gestionVente.designationInput.setText(designation);
+		gestionVente.prixInput.setText(prix+"");
+		gestionVente.id_produit.setText(id_produit+"");
 		
 	}
 	public void modify() {

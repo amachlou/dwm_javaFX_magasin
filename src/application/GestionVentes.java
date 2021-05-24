@@ -8,7 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 	import javafx.scene.control.Button;
-	import javafx.scene.control.Label;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 	import javafx.scene.control.Menu;
 	import javafx.scene.control.MenuBar;
 	import javafx.scene.control.MenuItem;
@@ -34,12 +35,11 @@ import vente.VenteHandler;
 	public class GestionVentes {
 	
 		VenteHandler handler=new VenteHandler(this);
+		ProduitHandler produitHandler=new ProduitHandler(this);
 		
-		
-		public ListeProduits listProduit;
+		ListeProduits listProduit;
 		NouveauClient ajoutClient;
 		ListeClients listClient;
-		ProduitHandler pHandler=new ProduitHandler(listProduit);
 		
 		
 		VBox root =new VBox();
@@ -58,14 +58,16 @@ import vente.VenteHandler;
 		Stage window =new Stage();
 	
 		
-		TableColumn<LigneCommande,Long> idCmdColumn;
-		TableColumn<LigneCommande,String> designationCmdColumn;
-		TableColumn<LigneCommande,Double> prixCmdColumn;
-		TableColumn<LigneCommande,Integer> qteCmdColumn;
-		TableColumn<LigneCommande,LocalDate> sousTotalColumn;
+		TableColumn<LigneCommande, Long> idCmdColumn=new TableColumn<>("Id");
+		TableColumn<LigneCommande, String> designationCmdColumn=new TableColumn<>("Designation");
+		TableColumn<LigneCommande, Double> prixCmdColumn=new TableColumn<>("Prix");
+		TableColumn<LigneCommande, Integer> qteCmdColumn=new TableColumn<>("Qte");
+		TableColumn<LigneCommande, Double> sousTotalColumn=new TableColumn<>("Sous-total");
 		
-		TableView <LigneCommande> commandeList;
+		public TableView <LigneCommande> commandeList=new TableView<>();
 		
+		public ObservableList<LigneCommande> commandeObservableList= FXCollections.observableArrayList();
+
 		
 		TableColumn<Produit, Long> idColumn=new TableColumn<>("Id");
 		TableColumn<Produit, String> designationColumn=new TableColumn<>("Designation");
@@ -109,25 +111,29 @@ import vente.VenteHandler;
 		Label lblNomClient;
 		Label lblDate;
 		
-		Label lblCodeCmd;
+		
+		public Label lblCodeCmd;
 		Label lblDesignation;
 		Label lblPrix;
 		Label lblQte;
+		public Label id_produit;
+	
 		
 		Label lblTotal;
-		Label lblTotalVal;
+		public Label lblTotalVal;
 		
 
 		
-		TextField numVenteInput;
+		public TextField numVenteInput;
 //		TextField clientInput;
 		public Label lblClientInput;
-		TextField dateInput;
+		public DatePicker dateInput;
 		
-		public Label lblcodeCmd;
-		TextField designationInput;
-		TextField prixInput;
-		TextField qteInput;
+		
+		public TextField codeCmdInput;
+		public TextField designationInput;
+		public TextField prixInput;
+		public TextField qteInput;
 		
 
 		
@@ -225,22 +231,25 @@ import vente.VenteHandler;
 			lblNumVente = new Label("N°:");
 			lblNomClient=new Label("Client: ");
 			lblClientInput=new Label("");
-			lblDate=new Label("Date:");
+			lblDate=new Label("Date: ");
 			
 			lblCodeCmd=new Label("Code.c:");
 			lblDesignation = new Label("Design:");
 			lblPrix=new Label("Prix:");
 			lblQte=new Label("Qte:");
 			
+			id_produit=new Label();
+			id_produit.setVisible(false);
+			
 			lblTotal = new Label("Total: ");
-			lblTotalVal= new Label("69520");
+			lblTotalVal= new Label("0");
 			
 			numVenteInput= new TextField();
 			designationInput= new TextField();
 			qteInput= new TextField();
-			dateInput= new TextField();
+			dateInput=new DatePicker();
 			prixInput=new TextField();
-			lblcodeCmd= new Label();
+			codeCmdInput= new TextField();
 //			clientInput=new TextField();
 		
 			
@@ -261,11 +270,11 @@ import vente.VenteHandler;
 			
 	
 			
-			idColumn.setPrefWidth(100);
-			designationColumn.setPrefWidth(400);
-			prixColumn.setPrefWidth(200);
-			qteColumn.setPrefWidth(140);
-			dateColumn.setPrefWidth(240);
+			idColumn.setPrefWidth(80);
+			designationColumn.setPrefWidth(350);
+			prixColumn.setPrefWidth(180);
+			qteColumn.setPrefWidth(120);
+			dateColumn.setPrefWidth(230);
 			
 	
 			produitList.setPrefSize( 0, 450);			
@@ -297,18 +306,39 @@ import vente.VenteHandler;
 			designationCmdColumn=new TableColumn<>("Designation");
 			prixCmdColumn=new TableColumn<>("Prix");
 			qteCmdColumn=new TableColumn<>("Qte");
-			sousTotalColumn=new TableColumn<>("Date");
+			sousTotalColumn=new TableColumn<>("Sous-Total");
 			
 			idCmdColumn.setPrefWidth(100);
-			designationCmdColumn.setPrefWidth(400);
-			prixCmdColumn.setPrefWidth(200);
-			qteCmdColumn.setPrefWidth(140);
-			sousTotalColumn.setPrefWidth(240);
+			designationCmdColumn.setPrefWidth(330);
+			prixCmdColumn.setPrefWidth(180);
+			qteCmdColumn.setPrefWidth(100);
+			sousTotalColumn.setPrefWidth(230);
 			
 			commandeList=new TableView<>();
 			commandeList.setPrefSize( 0, 800);			
 			commandeList.getColumns().addAll(idCmdColumn,
 			designationCmdColumn,prixCmdColumn,qteCmdColumn,sousTotalColumn);
+			
+			
+			commandeList.setItems(commandeObservableList);
+			
+			idCmdColumn.setCellValueFactory(
+				    new PropertyValueFactory<LigneCommande,Long>("id_commande")
+				);
+			designationCmdColumn.setCellValueFactory(
+				    new PropertyValueFactory<LigneCommande,String>("designation")
+				);
+			qteCmdColumn.setCellValueFactory(
+				    new PropertyValueFactory<LigneCommande,Integer>("qte")
+				);
+			prixCmdColumn.setCellValueFactory(
+				    new PropertyValueFactory<LigneCommande,Double>("prix")
+				);
+			sousTotalColumn.setCellValueFactory(
+				    new PropertyValueFactory<LigneCommande,Double>("sous_total")
+				);
+			
+		
 			
 			grid1.add(lblNumVente, 0, 0); 
 		    grid1.add(numVenteInput, 1, 0); 
@@ -319,7 +349,7 @@ import vente.VenteHandler;
 		    
 		    
 		    grid2.add(lblCodeCmd, 0, 0); 
-		    grid2.add(lblcodeCmd, 1, 0); 
+		    grid2.add(codeCmdInput, 1, 0); 
 		    grid2.add(lblDesignation, 0, 1);       
 		    grid2.add(designationInput, 1, 1); 
 		    grid2.add(lblPrix, 0, 2);
@@ -415,7 +445,7 @@ import vente.VenteHandler;
 			dateInput.getStyleClass().addAll("fontListe","inputFont"); 
 //			TextField clientInput.getStyleClass().addAll("fontListe","inputFont"); 
 			lblClientInput.getStyleClass().addAll("fontListe","inputFont");
-			lblcodeCmd.getStyleClass().addAll("fontListe","inputFont");
+			codeCmdInput.getStyleClass().addAll("fontListe","inputFont");
 			designationInput.getStyleClass().addAll("fontListe","inputFont");
 			
 		
@@ -440,6 +470,13 @@ import vente.VenteHandler;
 
 			
 		}
+		private void emptyInput() {
+			codeCmdInput.setText(""); 
+			designationInput.setText(""); 
+			qteInput.setText(""); 
+			prixInput.setText("");
+			
+		}
 		
 		private void addEvent() {
 
@@ -455,6 +492,13 @@ import vente.VenteHandler;
 				listClient= new ListeClients();
 				window.close();
 			});
+			produitList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				produitHandler.selectItemVente();
+			});
+			ajouterCmdBtn.setOnAction(event ->{
+				handler.addCommande();
+				emptyInput();
+			});
 			
 			
 		}
@@ -464,6 +508,7 @@ import vente.VenteHandler;
 			
 			initWindow();
 			createCompnents();
+			produitHandler.updateListVente();
 			addNodestoPane();
 			addStyleToNodes();
 			addEvent();
