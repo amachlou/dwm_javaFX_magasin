@@ -30,7 +30,10 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 			pst.setDate(1,date);
 			pst.setDouble(2, obj.getTotal());
 			pst.setLong(3, obj.getId_client());
-			pst.executeUpdate();
+			int rowsInserted =pst.executeUpdate();
+			if (rowsInserted == 1) {
+				obj.isAdded=true;
+			}
 		
 		} catch (SQLException e) {
 			

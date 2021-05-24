@@ -65,15 +65,17 @@ public class LigneCommande {
 		this.id_produit = id_produit;
 		this.id_vente = id_vente;
 	}
-	public LigneCommande(long id_commande, String designation, double prix, int qte, double sous_total) {
+	public LigneCommande(long id_commande, String designation, double prix, int qte, double sous_total, long id_produit) {
 		super();
 		this.id_commande = id_commande;
 		this.designation = designation;
 		this.prix = prix;
 		this.qte = qte;
 		this.sous_total = sous_total;
-		
+		this.id_produit = id_produit;
 	}
+
+	
 	@Override
 	public String toString() {
 		return  id_commande + designation + prix+ qte + sous_total + id_produit + id_vente ;

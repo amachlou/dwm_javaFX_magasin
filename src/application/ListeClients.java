@@ -360,6 +360,7 @@ import vente.VenteHandler;
 			});
 			nouveauVente.setOnAction(event ->{
 				gestionventes = new GestionVentes();
+				gestionventes.id_client.setText(lblIdClient.getText());
 				gestionventes.lblClientInput.setText(NomInput.getText()+" "+PrenomInput.getText());				
 				window.close();
 			});

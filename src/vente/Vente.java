@@ -8,6 +8,7 @@ public class Vente {
 	private LocalDate date;
 	private double total;
 	private long id_client;
+	public static boolean isAdded=false;
 	
 	public long getId_vente() {
 		return id_vente;
@@ -40,6 +41,11 @@ public class Vente {
 		this.id_vente = id_vente;
 		this.date = date;
 		this.total = total;
+		this.id_client=id_client;
+	}
+	@Override
+	public String toString() {
+		return id_vente +""+ date +  total +  id_client ;
 	}
 	
 	

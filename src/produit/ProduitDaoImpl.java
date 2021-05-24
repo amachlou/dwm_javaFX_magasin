@@ -33,7 +33,7 @@ public class ProduitDaoImpl extends AbstractDAO implements IProduitDAO {
 	@Override
 	public void update(Produit obj) {
 		PreparedStatement pst=null;
-		String query="UPDATE produit set designation=?,qte=?,prix=?,date=? WHERE id_produit=?";
+		String query="UPDATE lignecommande SET designation=?,prix=?,qte=?,sous_total=?,id_produit=?,id_vente=? WHERE id_cmd=?";
 		
 		try {
 			

@@ -44,18 +44,18 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 	@Override
 	public void update(LigneCommande obj) {
 		PreparedStatement pst=null;
-		String query="UPDATE lignecommande set designation=?,prix=? qte=?,sous_total=?,id_produit=?,id_vente=?  WHERE id_cmd=?";
+		String query="UPDATE lignecommande set designation=?,prix=?, qte=?,sous_total=?,id_produit=?,id_vente=?  WHERE id_cmd=?";
 		
 		try {
 			
 			pst=connection.prepareStatement(query);
 			pst.setString(1,obj.getDesignation());
-			pst.setDouble(3, obj.getPrix());
-			pst.setInt(2,obj.getQte());
-			pst.setDouble(3, obj.getSous_total());
-			pst.setLong(4, obj.getId_commande());
+			pst.setDouble(2, obj.getPrix());
+			pst.setInt(3,obj.getQte());
+			pst.setDouble(4, obj.getSous_total());
 			pst.setLong(5, obj.getId_produit());
 			pst.setLong(6, obj.getId_vente());
+			pst.setLong(7, obj.getId_commande());
 			pst.executeUpdate();
 		
 		} catch (SQLException e) {
@@ -107,17 +107,24 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 		
 		return null;
 	}
-
+	
 	@Override
-	public List<LigneCommande> getAll() {
+	public List<LigneCommande> getAll(){
+		return null;
+		
+	}
+
+
+	public List<LigneCommande> getAllLigne(long id_vente) {
 		List<LigneCommande> list =new ArrayList<LigneCommande>();
 		PreparedStatement pst=null;
 		ResultSet rs;
-		String query="select * from lignecommande";
+		String query="select * from lignecommande where id_vente=?";
 		
 		try {
 			
 			pst=connection.prepareStatement(query);
+			pst.setLong(1, id_vente);
 			rs=pst.executeQuery();
 			while(rs.next()) {
 				list.add(new LigneCommande(rs.getLong("id_cmd"),rs.getString("designation"),rs.getDouble("prix"),rs.getInt("qte"),rs.getDouble("sous_total"),rs.getLong("id_produit"),rs.getLong("id_vente")));

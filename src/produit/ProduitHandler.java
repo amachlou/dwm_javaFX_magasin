@@ -89,11 +89,12 @@ public class ProduitHandler {
 		String designation = p.getDesignation();
 		double prix = p.getPrix();
 		
+		gestionVente.id_produit.setText(id_produit+"");
 		gestionVente.designationInput.setText(designation);
 		gestionVente.prixInput.setText(prix+"");
 		gestionVente.id_produit.setText(id_produit+"");
-		
 	}
+	
 	public void modify() {
 		
 		long id=Integer.valueOf(listProduit.titleInput.getText());

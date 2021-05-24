@@ -63,6 +63,9 @@ import vente.VenteHandler;
 		TableColumn<LigneCommande, Double> prixCmdColumn=new TableColumn<>("Prix");
 		TableColumn<LigneCommande, Integer> qteCmdColumn=new TableColumn<>("Qte");
 		TableColumn<LigneCommande, Double> sousTotalColumn=new TableColumn<>("Sous-total");
+		TableColumn<LigneCommande, Long> idProduitColumn=new TableColumn<>("Id_produit");
+		TableColumn<LigneCommande, Long> idVenteColumn=new TableColumn<>("Id_vente");
+		
 		
 		public TableView <LigneCommande> commandeList=new TableView<>();
 		
@@ -116,8 +119,11 @@ import vente.VenteHandler;
 		Label lblDesignation;
 		Label lblPrix;
 		Label lblQte;
-		public Label id_produit;
-	
+		
+		public Label id_produit=new Label();
+		public TextField id_client=new TextField();
+
+		
 		
 		Label lblTotal;
 		public Label lblTotalVal;
@@ -238,8 +244,6 @@ import vente.VenteHandler;
 			lblPrix=new Label("Prix:");
 			lblQte=new Label("Qte:");
 			
-			id_produit=new Label();
-			id_produit.setVisible(false);
 			
 			lblTotal = new Label("Total: ");
 			lblTotalVal= new Label("0");
@@ -317,7 +321,7 @@ import vente.VenteHandler;
 			commandeList=new TableView<>();
 			commandeList.setPrefSize( 0, 800);			
 			commandeList.getColumns().addAll(idCmdColumn,
-			designationCmdColumn,prixCmdColumn,qteCmdColumn,sousTotalColumn);
+			designationCmdColumn,prixCmdColumn,qteCmdColumn,sousTotalColumn,idProduitColumn,idVenteColumn);
 			
 			
 			commandeList.setItems(commandeObservableList);
@@ -337,9 +341,14 @@ import vente.VenteHandler;
 			sousTotalColumn.setCellValueFactory(
 				    new PropertyValueFactory<LigneCommande,Double>("sous_total")
 				);
+			idProduitColumn.setCellValueFactory(
+				    new PropertyValueFactory<LigneCommande,Long>("id_produit")
+				);
+			idVenteColumn.setCellValueFactory(
+				    new PropertyValueFactory<LigneCommande,Long>("id_vente")
+				);
 			
-		
-			
+
 			grid1.add(lblNumVente, 0, 0); 
 		    grid1.add(numVenteInput, 1, 0); 
 		    grid1.add(lblNomClient, 0, 1);       
@@ -471,6 +480,7 @@ import vente.VenteHandler;
 			
 		}
 		private void emptyInput() {
+			
 			codeCmdInput.setText(""); 
 			designationInput.setText(""); 
 			qteInput.setText(""); 
@@ -495,10 +505,18 @@ import vente.VenteHandler;
 			produitList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 				produitHandler.selectItemVente();
 			});
+			commandeList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				handler.selectItemCmd();
+			});
 			ajouterCmdBtn.setOnAction(event ->{
-				handler.addCommande();
+				handler.addCommandeToTable();				
 				emptyInput();
 			});
+			nouveauVente.setOnAction(event ->{
+				handler.addVente();
+
+			});
+			
 			
 			
 		}
@@ -512,6 +530,7 @@ import vente.VenteHandler;
 			addNodestoPane();
 			addStyleToNodes();
 			addEvent();
+			
 			
 		
 		}
