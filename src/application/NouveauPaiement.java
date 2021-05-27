@@ -23,12 +23,14 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class GestionPaiements {
+public class NouveauPaiement {
 
 	
-		NouveauProduit ajoutProduit;
-		ListeProduits listProduit;
-		NouveauClient ajoutClient;
+	ListeProduits listProduit;
+	ListeClients listClient;
+	NouveauVente nouveauVente;
+	ListeVentes listeVentes;
+
 		
 		VBox root =new VBox();
 		HBox hboxCenter=new HBox();
@@ -63,11 +65,27 @@ public class GestionPaiements {
 		Menu paimentsMenu;
 		Menu helpMenu;
 		
-		MenuItem newProduit;
-		MenuItem listProduits;	
-		MenuItem newClient;
-		MenuItem listClients;	
+		MenuItem newVente;
+		MenuItem listVentes;
+		MenuItem newPaiement;
+		MenuItem listPaiements;
 		MenuItem helpItem;
+		
+//		newVente.getStyleClass().addAll("cursor");
+//		listVentes.getStyleClass().addAll("cursor");
+//		ventesMenu.getItems().addAll(newVente,listVentes);
+//		newVente=new MenuItem("Nouveau");
+//		listVentes=new MenuItem("Liste");
+//		MenuItem newVente;
+//		MenuItem listVentes;
+		
+//		newPaiement.getStyleClass().addAll("cursor");
+//		listPaiements.getStyleClass().addAll("cursor");			
+//		paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+//		newPaiement=new MenuItem("Nouveau");
+//		listPaiements=new MenuItem("Liste");
+//		MenuItem newPaiement;
+//		MenuItem listPaiement;
 		
 		Label Produits;
 		Label Clients;
@@ -164,16 +182,26 @@ public class GestionPaiements {
 			menuBar.getMenus().addAll(produitsMenu,clientsMenu,ventesMenu,paimentsMenu,helpMenu);
 			
 			
-			newProduit=new MenuItem("Nouveau");
-			listProduits=new MenuItem("Liste");
+//			newProduit=new MenuItem("Nouveau");
+//			listProduits=new MenuItem("Liste");
+//			
+//			newClient=new MenuItem("Nouveau");
+//			listClients=new MenuItem("Liste");
+			;
+			newVente=new MenuItem("Nouveau");
+			listVentes=new MenuItem("Liste");
 			
-			newClient=new MenuItem("Nouveau");
-			listClients=new MenuItem("Liste");
+			newPaiement=new MenuItem("Nouveau");
+			listPaiements=new MenuItem("Liste");
 			
 			helpItem=new MenuItem("?");
 			
-			produitsMenu.getItems().addAll(newProduit,listProduits);
-			clientsMenu.getItems().addAll(newClient,listClients);
+//			produitsMenu.getItems().addAll(newProduit,listProduits);
+//			clientsMenu.getItems().addAll(newClient,listClients);
+
+			ventesMenu.getItems().addAll(newVente,listVentes);
+			paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+			
 			helpMenu.getItems().addAll(helpItem);
 			
 			
@@ -309,11 +337,18 @@ public class GestionPaiements {
 			Paiments.getStyleClass().addAll("textWhite","cursor");
 			Help.getStyleClass().addAll("textWhite","cursor");
 			
-			newProduit.getStyleClass().addAll("cursor");
-			listProduits.getStyleClass().addAll("cursor");
+//			newProduit.getStyleClass().addAll("cursor");
+//			listProduits.getStyleClass().addAll("cursor");
+//			
+//			newClient.getStyleClass().addAll("cursor");
+//			listClients.getStyleClass().addAll("cursor");
 			
-			newClient.getStyleClass().addAll("cursor");
-			listClients.getStyleClass().addAll("cursor");
+			newVente.getStyleClass().addAll("cursor");
+			listVentes.getStyleClass().addAll("cursor");
+			
+			newPaiement.getStyleClass().addAll("cursor");
+			listPaiements.getStyleClass().addAll("cursor");			
+	
 			
 			helpItem.getStyleClass().addAll("cursor");
 			
@@ -360,23 +395,34 @@ public class GestionPaiements {
 		}
 		
 		private void addEvent() {
-			newProduit.setOnAction(event ->{
-				ajoutProduit= new NouveauProduit();
-				window.close();
-			});
-			listProduits.setOnAction(event ->{
+		
+			Produits.setOnMouseClicked((mouseEvent) -> {
 				listProduit= new ListeProduits();
 				window.close();
-			});
-			newClient.setOnAction(event ->{
-				ajoutClient= new NouveauClient();
+		    });
+			Clients.setOnMouseClicked((mouseEvent) -> {
+				listClient= new ListeClients();
 				window.close();
+		    });
+			newVente.setOnAction(event ->{
+				   nouveauVente=new NouveauVente();
+				   window.close();
+			});
+				
+			listVentes.setOnAction(event ->{
+				listeVentes =new ListeVentes();
+				window.close();
+
+			});
+			listPaiements.setOnAction(event ->{
+				
+
 			});
 			
 		}
 		
 		
-		public GestionPaiements(){
+		public NouveauPaiement(){
 			
 			initWindow();
 			createCompnents();

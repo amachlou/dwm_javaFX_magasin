@@ -55,10 +55,14 @@ public class Main extends Application {
 	
 	public Label lblError;
 	
-	MenuItem newProduit;
-	MenuItem listProduits;	
-	MenuItem newClient;
-	MenuItem listClients;	
+//	MenuItem newProduit;
+//	MenuItem listProduits;	
+//	MenuItem newClient;
+//	MenuItem listClients;
+	MenuItem newVente;
+	MenuItem listVentes;
+	MenuItem newPaiement;
+	MenuItem listPaiements;
 	MenuItem helpItem;
 	
 	VBox root =new VBox();
@@ -161,17 +165,29 @@ public class Main extends Application {
 		menuBar.getMenus().addAll(clientsMenu,produitsMenu,ventesMenu
 				,paimentsMenu,helpMenu);
 		
-		newProduit=new MenuItem("Nouveau");
-		listProduits=new MenuItem("Liste");
-		
-		newClient=new MenuItem("Nouveau");
-		listClients=new MenuItem("Liste");
-		
+//		newProduit=new MenuItem("Nouveau");
+//		listProduits=new MenuItem("Liste");
+//		
+//		newClient=new MenuItem("Nouveau");
+//		listClients=new MenuItem("Liste");
+
+		newPaiement=new MenuItem("Nouveau");
+		listPaiements=new MenuItem("Liste");
+
+
+		newVente=new MenuItem("Nouveau");
+		listVentes=new MenuItem("Liste");
+
 		helpItem=new MenuItem("?");
 		
 		
-		produitsMenu.getItems().addAll(newProduit,listProduits);
-		clientsMenu.getItems().addAll(newClient,listClients);
+//		produitsMenu.getItems().addAll(newProduit,listProduits);
+//		clientsMenu.getItems().addAll(newClient,listClients);
+
+		ventesMenu.getItems().addAll(newVente,listVentes);
+			
+		paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+
 		helpMenu.getItems().addAll(helpItem);
 		
 		
@@ -197,12 +213,18 @@ public class Main extends Application {
 		Paiments.getStyleClass().addAll("textWhite","cursor");
 		Help.getStyleClass().addAll("textWhite","cursor");
 		
-		newProduit.getStyleClass().addAll("cursor");
-		listProduits.getStyleClass().addAll("cursor");
+//		newProduit.getStyleClass().addAll("cursor");
+//		listProduits.getStyleClass().addAll("cursor");
+//		
+//		newClient.getStyleClass().addAll("cursor");
+//		listClients.getStyleClass().addAll("cursor");
 		
-		newClient.getStyleClass().addAll("cursor");
-		listClients.getStyleClass().addAll("cursor");
+		newVente.getStyleClass().addAll("cursor");
+		listVentes.getStyleClass().addAll("cursor");
 		
+		newPaiement.getStyleClass().addAll("cursor");
+		listPaiements.getStyleClass().addAll("cursor");			
+
 		helpItem.getStyleClass().addAll("cursor");
 		
 		lblError.getStyleClass().addAll("fontListe","error");
@@ -218,7 +240,7 @@ public class Main extends Application {
 			
 		});
 	
-		listClients.setOnAction(event ->{
+		Clients.setOnMouseClicked((mouseEvent) -> {
 			Login l =new Login();
 			if(l.isLogin) {
 				listClient=new ListeClients();
@@ -227,10 +249,10 @@ public class Main extends Application {
 			else {
 				lblError.setText("Information incorrect !");
 			}
+	    });
 
-		});
 		
-		listProduits.setOnAction(event ->{
+		Clients.setOnMouseClicked((mouseEvent) -> {
 			Login l =new Login();
 			if(l.isLogin) {
 				listProduit= new ListeProduits();
@@ -241,6 +263,25 @@ public class Main extends Application {
 			}
 			
 		});
+//		newVente.setOnAction(event ->{
+//			   nouveauVente=new NouveauVente();
+//			   window.close();
+//			});
+//			
+//			listVentes.setOnAction(event ->{
+//				
+//
+//			});
+//			newPaiement.setOnAction(event ->{
+//				nouveauPaiement=new NouveauPaiement();
+//				window.close();
+//
+//			});
+//			listPaiements.setOnAction(event ->{
+//				
+//
+//			});
+			
 		
 	}
 	

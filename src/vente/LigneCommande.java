@@ -53,8 +53,6 @@ public class LigneCommande {
 	public void setId_vente(long id_vente) {
 		this.id_vente = id_vente;
 	}
-	
-	
 	public LigneCommande(long id_commande, String designation, double prix, int qte, double sous_total, long id_produit,long id_vente) {
 		super();
 		this.id_commande = id_commande;
@@ -65,6 +63,7 @@ public class LigneCommande {
 		this.id_produit = id_produit;
 		this.id_vente = id_vente;
 	}
+	
 	public LigneCommande(long id_commande, String designation, double prix, int qte, double sous_total, long id_produit) {
 		super();
 		this.id_commande = id_commande;

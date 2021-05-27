@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import application.GestionVentes;
+import application.NouveauVente;
 import application.ListeClients;
 import application.ListeClients;
 import javafx.scene.control.Label;

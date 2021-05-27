@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.GestionVentes;
+import application.NouveauVente;
 import application.ListeClients;
 import application.ListeProduits;
 import application.Main;
@@ -21,13 +21,13 @@ import produit.ProduitDaoImpl;
 
 public class VenteHandler {
 	
-	GestionVentes gestionVente =null;
+	NouveauVente gestionVente =null;
 	ListeProduits listProduit=null;
 	IVenteDAO pdaoVente=new VenteDaoImpl();
 	ILigneCommandeDAO pdaoCommande =new LigneCommandeDaoImpl();
 	IProduitDAO pdaoProduit=new ProduitDaoImpl();
 	
-	public VenteHandler(GestionVentes gestionVente) {
+	public VenteHandler(NouveauVente gestionVente) {
 		this.gestionVente=gestionVente;
 		
 	}
@@ -77,6 +77,7 @@ public class VenteHandler {
 		pdaoVente.add(v);
 		if(v.isAdded) {
 			addListCommandeToDb();
+			
 		}
 		
 		
@@ -94,6 +95,7 @@ public class VenteHandler {
 	}
 	
 	public void addListCommandeToDb(){
+		
 		double sousTotal=0;
 		for(LigneCommande c:gestionVente.commandeObservableList) {
 			long id_produit=c.getId_produit();
@@ -103,9 +105,16 @@ public class VenteHandler {
 			double prix=c.getPrix();
 			sousTotal=qte*prix;
 			System.out.println(c);
-			pdaoCommande.add(c);
+			pdaoCommande.add(c);			
 	}
 }
+	
+	public void updateListLigneCommande() {
+		
+		long id_vente=Integer.valueOf(gestionVente.numVenteInput.getText());
+		List<LigneCommande> list=pdaoCommande.getAllLigne(id_vente);
+		gestionVente.commandeObservableList.addAll(list);		
+	}
 		
 		public void selectItemCmd() {
 			LigneCommande c = gestionVente.commandeList.getSelectionModel().getSelectedItem();
@@ -115,11 +124,37 @@ public class VenteHandler {
 			double prix = c.getPrix();
 			int qte = c.getQte();
 			
+			
 			gestionVente.codeCmdInput.setText(id_cmd+"");
 			gestionVente.designationInput.setText(designation);
 			gestionVente.prixInput.setText(prix+"");
 			gestionVente.qteInput.setText(qte+"");
 			gestionVente.id_produit.setText(id_produit+"");
+		}
+		
+		public void remove() {
+			
+			LigneCommande c = gestionVente.commandeList.getSelectionModel().getSelectedItem();
+			long id=c.getId_commande();
+			pdaoCommande.delete(id);
+			calculerTotal();
+			updateListLigneCommande();
+		}
+		
+		public void modify() {
+			double sousTotal=0;
+			long id_cmd=Integer.valueOf(gestionVente.codeCmdInput.getText());
+			long id_produit=Integer.valueOf(gestionVente.id_produit.getText());
+			String designation=gestionVente.designationInput.getText();
+			int qte=Integer.valueOf(gestionVente.qteInput.getText());
+			double prix=Double.valueOf(gestionVente.prixInput.getText());
+			sousTotal=qte*prix;
+				
+			LigneCommande c=new LigneCommande(id_cmd,designation,prix,qte,sousTotal,id_produit);
+			pdaoCommande.update(c);
+			calculerTotal();
+			updateListLigneCommande();
+			
 		}
 		
 		

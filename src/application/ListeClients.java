@@ -36,11 +36,12 @@ import vente.VenteHandler;
 		ClientHandler clientHandler=new ClientHandler(this);
 		VenteHandler venteHandler;
 		
-		NouveauProduit ajoutProduit;
 		ListeProduits listProduit;
-		NouveauClient ajoutClient;
-		GestionVentes gestionventes;
-		GestionPaiements gestionpaiements;
+		NouveauVente nouveauVente;
+		NouveauPaiement gestionpaiements;
+		NouveauPaiement nouveauPaiement;
+		ListeVentes listeVentes;
+
 		
 		VBox root =new VBox();
 		HBox hboxCenter=new HBox();
@@ -71,10 +72,14 @@ import vente.VenteHandler;
 		Menu paimentsMenu;
 		Menu helpMenu;
 		
-		MenuItem newProduit;
-		MenuItem listProduits;	
-		MenuItem newClient;
-		MenuItem listClients;	
+//		MenuItem newProduit;
+//		MenuItem listProduits;	
+//		MenuItem newClient;
+//		MenuItem listClients;
+		MenuItem newVente;
+		MenuItem listVentes;
+		MenuItem newPaiement;
+		MenuItem listPaiements;
 		MenuItem helpItem;
 		
 		Label Produits;
@@ -108,8 +113,8 @@ import vente.VenteHandler;
 		Button modifierBtn;
 		Button supprimerBtn;
 		
-		Button nouveauVente;
-		Button listVentes;
+		Button ajoutVente;
+		Button ventesList;
 		Button nouveauFacture;
 		Button listFactures;
 		
@@ -163,16 +168,28 @@ import vente.VenteHandler;
 			menuBar.getMenus().addAll(produitsMenu,clientsMenu,ventesMenu,paimentsMenu,helpMenu);
 			
 			
-			newProduit=new MenuItem("Nouveau");
-			listProduits=new MenuItem("Liste");
-			
-			newClient=new MenuItem("Nouveau");
-			listClients=new MenuItem("Liste");
+//			newProduit=new MenuItem("Nouveau");
+//			listProduits=new MenuItem("Liste");
+//			
+//			newClient=new MenuItem("Nouveau");
+//			listClients=new MenuItem("Liste");
+
+			newVente=new MenuItem("Nouveau");
+			listVentes=new MenuItem("Liste");
+
+			newPaiement=new MenuItem("Nouveau");
+			listPaiements=new MenuItem("Liste");
+
 			
 			helpItem=new MenuItem("?");
 			
-			produitsMenu.getItems().addAll(newProduit,listProduits);
-			clientsMenu.getItems().addAll(newClient,listClients);
+//			produitsMenu.getItems().addAll(newProduit,listProduits);
+//			clientsMenu.getItems().addAll(newClient,listClients);
+
+			ventesMenu.getItems().addAll(newVente,listVentes);
+				
+			paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+
 			helpMenu.getItems().addAll(helpItem);
 			
 			
@@ -206,8 +223,8 @@ import vente.VenteHandler;
 			modifierBtn=new Button("Modifier");
 		    ajouterBtn = new Button("Ajouter");
 		    
-		    nouveauVente=new Button("Nouveau Vente");
-			listVentes=new Button("Liste de Ventes");
+		    ajoutVente=new Button("Nouveau Vente");
+			ventesList=new Button("Liste de Ventes");
 			nouveauFacture=new Button("Nouveau Facture");
 			listFactures=new Button("Liste de Factures");
 			
@@ -261,7 +278,7 @@ import vente.VenteHandler;
 			hboxBtn.getChildren().addAll(ajouterBtn,modifierBtn,supprimerBtn,rechercheBtn,annulerBtn);
 			vboxCenter.getChildren().addAll(lblNumClient,lblIdClient,lblNom,NomInput,
 			lblPrenom,PrenomInput,lblTel,TelInput,lblEmail,EmailInput);
-			hboxActions.getChildren().addAll(nouveauVente,listVentes,nouveauFacture,
+			hboxActions.getChildren().addAll(ajoutVente,ventesList,nouveauFacture,
 		    listFactures);
 			
 			root.getChildren().addAll(menuBar,hboxTop,hboxActions,hboxCenter,hboxBtn,hboxBottom);
@@ -296,12 +313,18 @@ import vente.VenteHandler;
 			Paiments.getStyleClass().addAll("textWhite","cursor");
 			Help.getStyleClass().addAll("textWhite","cursor");
 			
-			newProduit.getStyleClass().addAll("cursor");
-			listProduits.getStyleClass().addAll("cursor");
+//			newProduit.getStyleClass().addAll("cursor");
+//			listProduits.getStyleClass().addAll("cursor");
+//			
+//			newClient.getStyleClass().addAll("cursor");
+//			listClients.getStyleClass().addAll("cursor");
 			
-			newClient.getStyleClass().addAll("cursor");
-			listClients.getStyleClass().addAll("cursor");
+			newVente.getStyleClass().addAll("cursor");
+			listVentes.getStyleClass().addAll("cursor");
 			
+			newPaiement.getStyleClass().addAll("cursor");
+			listPaiements.getStyleClass().addAll("cursor");			
+
 			helpItem.getStyleClass().addAll("cursor");
 			
 			lblTitle.getStyleClass().add("titleFont");
@@ -328,8 +351,8 @@ import vente.VenteHandler;
 			modifierBtn.getStyleClass().addAll("font","btn","cursor");	
 			ajouterBtn.getStyleClass().addAll("font","btn","cursor");
 			
-			nouveauVente.getStyleClass().addAll("font","btn","cursor","btnAction");
-			listVentes.getStyleClass().addAll("font","btn","cursor","btnAction");
+			ajoutVente.getStyleClass().addAll("font","btn","cursor","btnAction");
+			ventesList.getStyleClass().addAll("font","btn","cursor","btnAction");
 			nouveauFacture.getStyleClass().addAll("font","btn","cursor","btnAction");
 			listFactures.getStyleClass().addAll("font","btn","cursor","btnAction");
 
@@ -346,26 +369,50 @@ import vente.VenteHandler;
 		}
 		
 		private void addEvent() {
-			newProduit.setOnAction(event ->{
-				ajoutProduit= new NouveauProduit();
-				window.close();
-			});
-			listProduits.setOnAction(event ->{
+			Produits.setOnMouseClicked((mouseEvent) -> {
 				listProduit= new ListeProduits();
 				window.close();
-			});
-			newClient.setOnAction(event ->{
-				ajoutClient= new NouveauClient();
-				window.close();
-			});
-			nouveauVente.setOnAction(event ->{
-				gestionventes = new GestionVentes();
-				gestionventes.id_client.setText(lblIdClient.getText());
-				gestionventes.lblClientInput.setText(NomInput.getText()+" "+PrenomInput.getText());				
+		    });
+			newVente.setOnAction(event ->{
+				   nouveauVente=new NouveauVente();
+				   window.close();
+				});
+				
+				listVentes.setOnAction(event ->{
+					listeVentes =new ListeVentes();
+					window.close();
+
+				});
+				newPaiement.setOnAction(event ->{
+					nouveauPaiement=new NouveauPaiement();
+					window.close();
+
+				});
+				listPaiements.setOnAction(event ->{
+					
+
+				});
+				
+//			newProduit.setOnAction(event ->{
+//				ajoutProduit= new NouveauProduit();
+//				window.close();
+//			});
+//			listProduits.setOnAction(event ->{
+//				listProduit= new ListeProduits();
+//				window.close();
+//			});
+//			newClient.setOnAction(event ->{
+//				ajoutClient= new NouveauClient();
+//				window.close();
+//			});
+			ajoutVente.setOnAction(event ->{
+				nouveauVente = new NouveauVente();
+				nouveauVente.id_client.setText(lblIdClient.getText());
+				nouveauVente.lblClientInput.setText(NomInput.getText()+" "+PrenomInput.getText());				
 				window.close();
 			});
 			nouveauFacture.setOnAction(event ->{
-				gestionpaiements = new GestionPaiements();
+				gestionpaiements = new NouveauPaiement();
 				window.close();
 			});
 			ajouterBtn.setOnAction(event ->{
@@ -404,6 +451,7 @@ import vente.VenteHandler;
 				clientHandler.search();
 				emptyInput();
 			});
+			
 			
 			
 		}

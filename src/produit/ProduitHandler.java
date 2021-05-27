@@ -5,20 +5,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import application.GestionVentes;
+import application.NouveauVente;
 import application.ListeProduits;
 import javafx.scene.control.Label;
 
 public class ProduitHandler {
 	
 	ListeProduits listProduit=null;
-	GestionVentes gestionVente=null;
+	NouveauVente gestionVente=null;
 	IProduitDAO pdao=new ProduitDaoImpl();
 
 	public ProduitHandler(ListeProduits listProduit) {
 		this.listProduit=listProduit;
 	}
-	public ProduitHandler(GestionVentes gestionVente) {
+	public ProduitHandler(NouveauVente gestionVente) {
 		this.gestionVente=gestionVente;
 	}
 	
@@ -30,7 +30,7 @@ public class ProduitHandler {
 		calculerTotal();
 	}
 	
-	public void updateListVente() {
+	public void updateListProduitVente() {
 		List<Produit> list=pdao.getAll();
 		gestionVente.produitObservableList.addAll(list);
 		
@@ -57,7 +57,7 @@ public class ProduitHandler {
 		LocalDate date=listProduit.dateInput.getValue();	
 		Produit p=new Produit(0,designation,qte,prix,date);
 		pdao.add(p);
-		
+		updateListProduits();
 	}
 	
 	public void remove() {
@@ -65,6 +65,8 @@ public class ProduitHandler {
 	Produit p = listProduit.produitList.getSelectionModel().getSelectedItem();
 	long id=p.getId_produit();
 	pdao.delete(id);
+	updateListProduits();
+
 	}
 
 	public void selectItem() {
@@ -104,6 +106,7 @@ public class ProduitHandler {
 		LocalDate date=listProduit.dateInput.getValue();	
 		Produit p=new Produit(id,designation,qte,prix,date);
 		pdao.update(p);
+		updateListProduits();
 		
 	}
 	

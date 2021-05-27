@@ -44,7 +44,7 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 	@Override
 	public void update(LigneCommande obj) {
 		PreparedStatement pst=null;
-		String query="UPDATE lignecommande set designation=?,prix=?, qte=?,sous_total=?,id_produit=?,id_vente=?  WHERE id_cmd=?";
+		String query="UPDATE lignecommande set designation=?,prix=?, qte=?,sous_total=?,id_produit=? WHERE id_cmd=?";
 		
 		try {
 			
@@ -54,8 +54,7 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 			pst.setInt(3,obj.getQte());
 			pst.setDouble(4, obj.getSous_total());
 			pst.setLong(5, obj.getId_produit());
-			pst.setLong(6, obj.getId_vente());
-			pst.setLong(7, obj.getId_commande());
+			pst.setLong(6, obj.getId_commande());
 			pst.executeUpdate();
 		
 		} catch (SQLException e) {
