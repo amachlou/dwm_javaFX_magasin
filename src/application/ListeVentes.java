@@ -15,6 +15,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -25,8 +26,10 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import produit.Produit;
 import vente.LigneCommande;
 import vente.Vente;
+import vente.VenteHandler;
 
 public class ListeVentes {
 
@@ -34,6 +37,7 @@ public class ListeVentes {
 	ListeProduits listProduit;
 	ListeClients listClient;
 	NouveauVente nouveauVente;
+	VenteHandler handler=new VenteHandler(this);
 		
 		VBox root =new VBox();
 		HBox hboxCenter=new HBox();
@@ -55,6 +59,8 @@ public class ListeVentes {
 		TableColumn<Vente, Double> TotalColumn=new TableColumn<>("Total");
 		TableColumn<Vente, Double> TotalPayéColumn=new TableColumn<>("Payé");
 		TableColumn<Vente, Double> ResteColumn=new TableColumn<>("Reste");
+		TableColumn<Vente, Long> ClientColumn=new TableColumn<>("Id_client");
+
 
 
 		public TableView <Vente> VenteList=new TableView<>();
@@ -91,9 +97,9 @@ public class ListeVentes {
 		Label lblTotalPayé;
 		Label lblReste;
 		
-		Label lblTotalVal;
-		Label lblTotalPayéVal;
-		Label lblResteVal;
+		public Label lblTotalVal;
+		public Label lblTotalPayéVal;
+		public Label lblResteVal;
 		
 		Label lblDate1;
 		Label lblDate2;
@@ -101,10 +107,10 @@ public class ListeVentes {
 		Label lblNumVente;
 	
 		
-		DatePicker Date1Input;
-		DatePicker Date2Input;
-		TextField NomInput;
-		TextField NumVenteInput;
+		public DatePicker Date1Input;
+		public DatePicker Date2Input;
+		public TextField NomInput;
+		public TextField NumVenteInput;
 
 		Button rechercherBtn;
 
@@ -197,9 +203,9 @@ public class ListeVentes {
 			lblReste= new Label("Reste: ");
 			
 
-			lblTotalVal= new Label("65852");
-			lblTotalPayéVal= new Label("22502");
-			lblResteVal= new Label("40000");
+			lblTotalVal= new Label("");
+			lblTotalPayéVal= new Label("0");
+			lblResteVal= new Label("0");
 			
 			
 			lblDate1=new Label("Date 1: ");
@@ -214,7 +220,7 @@ public class ListeVentes {
 			NumVenteInput= new TextField();
 	
 			
-			rechercherBtn = new Button("Ajouter");
+			rechercherBtn = new Button("Rechercher");
 
 	
 			idVenteColumn.setPrefWidth(100);
@@ -227,9 +233,34 @@ public class ListeVentes {
 			
 			VenteList=new TableView<>();
 			VenteList.setPrefSize( 0, 800);			
-			VenteList.getColumns().addAll(idVenteColumn,NomClientColumn,DateColumn,TotalColumn,TotalPayéColumn,ResteColumn);
+			VenteList.getColumns().addAll(idVenteColumn,NomClientColumn,DateColumn,TotalColumn,TotalPayéColumn,ResteColumn,ClientColumn);
 			
+			VenteList.setItems(VenteObservableList);
 			
+			idVenteColumn.setCellValueFactory(
+				    new PropertyValueFactory<Vente,Long>("id_vente")
+				);
+			NomClientColumn.setCellValueFactory(
+				    new PropertyValueFactory<Vente,String>("nom_client")
+				);
+//			NomClientColumn.setCellValueFactory(
+//				    new PropertyValueFactory<Vente,String>("prenom")
+//				);
+			DateColumn.setCellValueFactory(
+				    new PropertyValueFactory<Vente,LocalDate>("date")
+				);
+			TotalColumn.setCellValueFactory(
+				    new PropertyValueFactory<Vente,Double>("total")
+				);
+			TotalPayéColumn.setCellValueFactory(
+				    new PropertyValueFactory<Vente,Double>("total_paye")
+				);
+			ResteColumn.setCellValueFactory(
+				    new PropertyValueFactory<Vente,Double>("reste")
+				);
+			ClientColumn.setCellValueFactory(
+				    new PropertyValueFactory<Vente,Long>("id_client")
+				);
 	
 		    grid1.add(lblTotal, 0, 0);
 		    grid1.add(lblTotalVal, 1, 0);
@@ -243,8 +274,7 @@ public class ListeVentes {
 		}
 		
 		private void addNodestoPane() {
-			
-		      
+					      
 			hboxBottom.getChildren().addAll(lblCopyright);
 			hboxTop.getChildren().addAll(lblTitle);
 			hboxCenter.getChildren().addAll(vboxLeft,vboxRight);	
@@ -258,6 +288,7 @@ public class ListeVentes {
 		
 		
 		public void initWindow(){
+			
 			window.setScene(scene);
 			window.setTitle("Gestion de Magasin  -  Acceuil");
 			window.getIcons().add(new Image("css/logo_icon.png"));
@@ -356,6 +387,10 @@ public class ListeVentes {
 
 			});
 			
+			VenteList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				handler.selectItemVente();
+			});
+			
 		}
 		
 		
@@ -363,6 +398,7 @@ public class ListeVentes {
 			
 			initWindow();
 			createCompnents();
+			handler.updateListVente();
 			addNodestoPane();
 			addStyleToNodes();
 			addEvent();

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,6 +133,28 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 		return list;
 	}
 	
+	public List<Vente> getAllVente() {
+		List<Vente> list =new ArrayList<Vente>();
+		PreparedStatement pst=null;
+		ResultSet rs;
+		String query="select v.id_vente,c.nom,v.id_client,v.date,v.total,p.total_paye,p.reste from vente v ,client c ,paiement p where v.id_client=c.id_client and v.id_vente=p.id_vente";
+		
+		try {
+			
+			pst=connection.prepareStatement(query);
+			rs=pst.executeQuery();
+			while(rs.next()) {
+				Date date =rs.getDate("date");
+				list.add(new Vente(rs.getLong("id_vente"),rs.getString("nom"),date.toLocalDate(),rs.getDouble("total"),rs.getDouble("total_paye"),rs.getDouble("reste"),rs.getLong("id_client")));
+			}
+		
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
 
 	@Override
 	public List<Vente> getAll(String text) {
@@ -148,6 +171,35 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 			while(rs.next()) {
 				Date date =rs.getDate("date");
 				list.add(new Vente(rs.getLong("id_vente"),date.toLocalDate(),rs.getDouble("total"),rs.getLong("id_client")));
+			}
+		
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	public List<Vente> searchVente(long id_vente,String nom,Date date1,Date date2) {
+		List<Vente> list =new ArrayList<Vente>();
+		PreparedStatement pst=null;
+		ResultSet rs;
+		String query="select DISTINCT v.id_vente,c.nom,v.id_client,v.date,v.total,p.total_paye,p.reste "
+				+ "from vente v ,client c ,paiement p where (c.id_client=v.id_client and v.id_vente=p.id_vente) "
+				+ "and (v.id_vente=? or c.nom=? or v.date BETWEEN ? and ?)";
+		
+		try {
+			
+			pst=connection.prepareStatement(query);
+			pst.setLong(1,id_vente);
+			pst.setString(2, nom);
+			pst.setDate(3, date1);
+			pst.setDate(4, date2);
+			rs=pst.executeQuery();
+			while(rs.next()) {
+				Date date =rs.getDate("date");
+				list.add(new Vente(rs.getLong("id_vente"),rs.getString("nom"),date.toLocalDate(),rs.getDouble("total"),rs.getDouble("total_paye"),rs.getDouble("reste"),rs.getLong("id_client")));
 			}
 		
 		} catch (SQLException e) {

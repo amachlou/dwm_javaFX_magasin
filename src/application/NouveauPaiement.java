@@ -46,15 +46,15 @@ public class NouveauPaiement {
 		Stage window =new Stage();
 	
 		
-		TableColumn<Reglement,Long> numReglemntColumn;
-		TableColumn<Reglement,String> montantPayéColumn;
-		TableColumn<Reglement,Double> dateColumn;
-		TableColumn<Reglement,Integer> typeColumn;
-		TableColumn<Reglement,LocalDate> numChequeColumn;
-		TableColumn<Reglement,LocalDate> nomPropreColumn;
-		TableColumn<Reglement,LocalDate> banqueColumn;
+		TableColumn<Paiement,Long> numReglemntColumn;
+		TableColumn<Paiement,String> montantPayéColumn;
+		TableColumn<Paiement,Double> dateColumn;
+		TableColumn<Paiement,Integer> typeColumn;
+		TableColumn<Paiement,LocalDate> numChequeColumn;
+		TableColumn<Paiement,LocalDate> nomPropreColumn;
+		TableColumn<Paiement,LocalDate> banqueColumn;
 
-		TableView <Reglement> reglementList;
+		TableView <Paiement> reglementList;
 		
 
 		

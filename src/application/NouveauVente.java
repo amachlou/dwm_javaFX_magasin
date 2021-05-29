@@ -533,10 +533,7 @@ public class NouveauVente {
 		});
 		listPaiements.setOnAction(event ->{
 			
-
 		});
-		
-		
 //		listProduits.setOnAction(event ->{
 //			listProduit= new ListeProduits();
 //			window.close();

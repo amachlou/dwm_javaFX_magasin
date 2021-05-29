@@ -1,6 +1,6 @@
 package application;
 
-public class Reglement {
+public class Paiement {
 
 }
 
