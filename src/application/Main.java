@@ -55,13 +55,7 @@ public class Main extends Application {
 	
 	public Label lblError;
 	
-//	MenuItem newProduit;
-//	MenuItem listProduits;	
-//	MenuItem newClient;
-//	MenuItem listClients;
-	MenuItem newVente;
 	MenuItem listVentes;
-	MenuItem newPaiement;
 	MenuItem listPaiements;
 	MenuItem helpItem;
 	
@@ -165,28 +159,17 @@ public class Main extends Application {
 		menuBar.getMenus().addAll(clientsMenu,produitsMenu,ventesMenu
 				,paimentsMenu,helpMenu);
 		
-//		newProduit=new MenuItem("Nouveau");
-//		listProduits=new MenuItem("Liste");
-//		
-//		newClient=new MenuItem("Nouveau");
-//		listClients=new MenuItem("Liste");
 
-		newPaiement=new MenuItem("Nouveau");
 		listPaiements=new MenuItem("Liste");
 
-
-		newVente=new MenuItem("Nouveau");
 		listVentes=new MenuItem("Liste");
 
 		helpItem=new MenuItem("?");
 		
-		
-//		produitsMenu.getItems().addAll(newProduit,listProduits);
-//		clientsMenu.getItems().addAll(newClient,listClients);
 
-		ventesMenu.getItems().addAll(newVente,listVentes);
+		ventesMenu.getItems().addAll(listVentes);
 			
-		paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+		paimentsMenu.getItems().addAll(listPaiements);
 
 		helpMenu.getItems().addAll(helpItem);
 		
@@ -213,16 +196,9 @@ public class Main extends Application {
 		Paiments.getStyleClass().addAll("textWhite","cursor");
 		Help.getStyleClass().addAll("textWhite","cursor");
 		
-//		newProduit.getStyleClass().addAll("cursor");
-//		listProduits.getStyleClass().addAll("cursor");
-//		
-//		newClient.getStyleClass().addAll("cursor");
-//		listClients.getStyleClass().addAll("cursor");
 		
-		newVente.getStyleClass().addAll("cursor");
 		listVentes.getStyleClass().addAll("cursor");
 		
-		newPaiement.getStyleClass().addAll("cursor");
 		listPaiements.getStyleClass().addAll("cursor");			
 
 		helpItem.getStyleClass().addAll("cursor");

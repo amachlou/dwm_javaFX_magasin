@@ -12,6 +12,7 @@ import application.ListeClients;
 import application.Main;
 import client.Client;
 import connection.AbstractDAO;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import produit.Produit;
@@ -137,7 +138,7 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 		List<Vente> list =new ArrayList<Vente>();
 		PreparedStatement pst=null;
 		ResultSet rs;
-		String query="select v.id_vente,c.nom,v.id_client,v.date,v.total,p.total_paye,p.reste from vente v ,client c ,paiement p where v.id_client=c.id_client and v.id_vente=p.id_vente";
+		String query="select v.id_vente,CONCAT(c.prenom, ' ', c.nom) as name,v.id_client,v.date,v.total,p.total_paye,p.reste from vente v ,client c ,paiement p where v.id_client=c.id_client";
 		
 		try {
 			
@@ -145,7 +146,7 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 			rs=pst.executeQuery();
 			while(rs.next()) {
 				Date date =rs.getDate("date");
-				list.add(new Vente(rs.getLong("id_vente"),rs.getString("nom"),date.toLocalDate(),rs.getDouble("total"),rs.getDouble("total_paye"),rs.getDouble("reste"),rs.getLong("id_client")));
+				list.add(new Vente(rs.getLong("id_vente"),rs.getString("name"),date.toLocalDate(),rs.getDouble("total"),rs.getDouble("total_paye"),rs.getDouble("reste"),rs.getLong("id_client")));
 			}
 		
 		} catch (SQLException e) {
@@ -181,13 +182,14 @@ public class VenteDaoImpl extends AbstractDAO implements IVenteDAO{
 		return list;
 	}
 	
-	public List<Vente> searchVente(long id_vente,String nom,Date date1,Date date2) {
+
+
+	@Override
+	public List<Vente> searchVente(long id_vente, String nom, Date date1, Date date2) {
 		List<Vente> list =new ArrayList<Vente>();
 		PreparedStatement pst=null;
 		ResultSet rs;
-		String query="select DISTINCT v.id_vente,c.nom,v.id_client,v.date,v.total,p.total_paye,p.reste "
-				+ "from vente v ,client c ,paiement p where (c.id_client=v.id_client and v.id_vente=p.id_vente) "
-				+ "and (v.id_vente=? or c.nom=? or v.date BETWEEN ? and ?)";
+		String query="select DISTINCT v.id_vente,c.nom,v.id_client,v.date,v.total,p.total_paye,p.reste from vente v ,client c ,paiement p where (c.id_client=v.id_client) and (v.id_vente=? and c.nom=? and v.date BETWEEN ? and ?)";
 		
 		try {
 			

@@ -76,9 +76,7 @@ public class ListeVentes {
 		Menu paimentsMenu;
 		Menu helpMenu;
 		
-		MenuItem newVente;
 		MenuItem listVentes;
-		MenuItem newPaiement;
 		MenuItem listPaiements;
 		MenuItem helpItem;
 
@@ -113,7 +111,7 @@ public class ListeVentes {
 		public TextField NumVenteInput;
 
 		Button rechercherBtn;
-
+		Button modifierBtn;
 		
 		
 		Font font;
@@ -164,16 +162,11 @@ public class ListeVentes {
 			menuBar.getMenus().addAll(produitsMenu,clientsMenu,ventesMenu,paimentsMenu,helpMenu);
 			
 			
-//			newProduit=new MenuItem("Nouveau");
-//			listProduits=new MenuItem("Liste");
-//			
-//			newClient=new MenuItem("Nouveau");
-//			listClients=new MenuItem("Liste");
-			;
-			newVente=new MenuItem("Nouveau");
+
+		
+
 			listVentes=new MenuItem("Liste");
 			
-			newPaiement=new MenuItem("Nouveau");
 			listPaiements=new MenuItem("Liste");
 			
 			helpItem=new MenuItem("?");
@@ -181,8 +174,8 @@ public class ListeVentes {
 //			produitsMenu.getItems().addAll(newProduit,listProduits);
 //			clientsMenu.getItems().addAll(newClient,listClients);
 
-			ventesMenu.getItems().addAll(newVente,listVentes);
-			paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+			ventesMenu.getItems().addAll(listVentes);
+			paimentsMenu.getItems().addAll(listPaiements);
 			
 			helpMenu.getItems().addAll(helpItem);
 			
@@ -221,7 +214,7 @@ public class ListeVentes {
 	
 			
 			rechercherBtn = new Button("Rechercher");
-
+			modifierBtn= new Button("Modifier");
 	
 			idVenteColumn.setPrefWidth(100);
 			NomClientColumn.setPrefWidth(400);
@@ -243,9 +236,7 @@ public class ListeVentes {
 			NomClientColumn.setCellValueFactory(
 				    new PropertyValueFactory<Vente,String>("nom_client")
 				);
-//			NomClientColumn.setCellValueFactory(
-//				    new PropertyValueFactory<Vente,String>("prenom")
-//				);
+
 			DateColumn.setCellValueFactory(
 				    new PropertyValueFactory<Vente,LocalDate>("date")
 				);
@@ -278,7 +269,7 @@ public class ListeVentes {
 			hboxBottom.getChildren().addAll(lblCopyright);
 			hboxTop.getChildren().addAll(lblTitle);
 			hboxCenter.getChildren().addAll(vboxLeft,vboxRight);	
-			vboxRight.getChildren().addAll(vboxR1,vboxR2,rechercherBtn,grid1);
+			vboxRight.getChildren().addAll(vboxR1,vboxR2,rechercherBtn,modifierBtn,grid1);
 			vboxR1.getChildren().addAll(lblDate1,Date1Input,lblDate2,Date2Input,lblNom,NomInput,lblNumVente,NumVenteInput);
 			vboxLeft.getChildren().addAll(VenteList);
 			
@@ -290,7 +281,7 @@ public class ListeVentes {
 		public void initWindow(){
 			
 			window.setScene(scene);
-			window.setTitle("Gestion de Magasin  -  Acceuil");
+			window.setTitle("Gestion de Magasin  -  Liste des Ventes");
 			window.getIcons().add(new Image("css/logo_icon.png"));
 			window.setMaximized(true);
 			window.show();
@@ -316,20 +307,12 @@ public class ListeVentes {
 			Ventes.getStyleClass().addAll("textWhite","cursor");
 			Paiments.getStyleClass().addAll("textWhite","cursor");
 			Help.getStyleClass().addAll("textWhite","cursor");
-			
-//			newProduit.getStyleClass().addAll("cursor");
-//			listProduits.getStyleClass().addAll("cursor");
-//			
-//			newClient.getStyleClass().addAll("cursor");
-//			listClients.getStyleClass().addAll("cursor");
-			
-			newVente.getStyleClass().addAll("cursor");
+
 			listVentes.getStyleClass().addAll("cursor");
 			
-			newPaiement.getStyleClass().addAll("cursor");
+
 			listPaiements.getStyleClass().addAll("cursor");			
-	
-			
+				
 			helpItem.getStyleClass().addAll("cursor");
 			
 			lblTitle.getStyleClass().add("titleFont");
@@ -360,11 +343,17 @@ public class ListeVentes {
 			
 			
 			rechercherBtn.getStyleClass().addAll("fontListe","textWhite","btn","cursor");
-			
+			modifierBtn.getStyleClass().addAll("fontListe","textWhite","btn","cursor");
+		}
+		private void emptyInput() {
+			Date1Input.setValue(null);
+			Date2Input.setValue(null);
+			NomInput.setText("");
+			NumVenteInput.setText("");
 		}
 		
 		private void addEvent() {
-		
+	
 			Produits.setOnMouseClicked((mouseEvent) -> {
 				listProduit= new ListeProduits();
 				window.close();
@@ -373,23 +362,26 @@ public class ListeVentes {
 				listClient= new ListeClients();
 				window.close();
 		    });
-			newVente.setOnAction(event ->{
-				   nouveauVente=new NouveauVente();
-				   window.close();
-			});
 				
-			listVentes.setOnAction(event ->{
-					
-
-			});
 			listPaiements.setOnAction(event ->{
-				
+			
 
 			});
 			
 			VenteList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 				handler.selectItemVente();
 			});
+			rechercherBtn.setOnAction(event ->{			
+				VenteList.getItems().clear();
+				handler.searchVente();
+				emptyInput();
+			});
+			
+			modifierBtn.setOnAction(event ->{			
+				handler.displayVente();
+				window.close();
+			});
+			
 			
 		}
 		

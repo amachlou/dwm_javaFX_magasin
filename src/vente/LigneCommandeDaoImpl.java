@@ -88,7 +88,7 @@ public class LigneCommandeDaoImpl extends AbstractDAO implements ILigneCommandeD
 		List<LigneCommande> list =new ArrayList<LigneCommande>();
 		PreparedStatement pst=null;
 		ResultSet rs;
-		String query="select * from lignecommande where id_cmd =?";
+		String query="select * from lignecommande where id_vente=?";
 		
 		try {
 			

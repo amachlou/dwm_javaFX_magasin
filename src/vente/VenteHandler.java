@@ -1,5 +1,6 @@
 package vente;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import application.ListeVentes;
 import application.Main;
 import client.Client;
 import client.ClientHandler;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import produit.IProduitDAO;
@@ -118,7 +120,9 @@ public class VenteHandler {
 		
 		long id_vente=Integer.valueOf(nouveauVente.numVenteInput.getText());
 		List<LigneCommande> list=pdaoCommande.getAllLigne(id_vente);
-		nouveauVente.commandeObservableList.addAll(list);		
+		nouveauVente.commandeObservableList.addAll(list);
+		calculerTotal();
+
 	}
 		
 		public void selectItemCmd() {
@@ -137,7 +141,7 @@ public class VenteHandler {
 			nouveauVente.id_produit.setText(id_produit+"");
 		}
 		
-		public void remove() {
+		public void removeCmd() {
 			
 			LigneCommande c = nouveauVente.commandeList.getSelectionModel().getSelectedItem();
 			long id=c.getId_commande();
@@ -146,7 +150,7 @@ public class VenteHandler {
 			updateListLigneCommande();
 		}
 		
-		public void modify() {
+		public void modifyCmd() {
 			double sousTotal=0;
 			long id_cmd=Integer.valueOf(nouveauVente.codeCmdInput.getText());
 			long id_produit=Integer.valueOf(nouveauVente.id_produit.getText());
@@ -158,8 +162,7 @@ public class VenteHandler {
 			LigneCommande c=new LigneCommande(id_cmd,designation,prix,qte,sousTotal,id_produit);
 			pdaoCommande.update(c);
 			calculerTotal();
-			updateListLigneCommande();
-			
+			updateListLigneCommande();			
 		}
 		public void updateListVente() {			
 			List<Vente> list=pdaoVente.getAllVente();
@@ -171,9 +174,7 @@ public class VenteHandler {
 			double total=v.getTotal();
 			double total_paye=v.getTotal_paye();
 			double reste =v.getReste();
-			
-			
-			
+						
 			listVentes.lblTotalVal.setText(total+"");
 			listVentes.lblTotalPayéVal.setText(total_paye+"");
 			listVentes.lblResteVal.setText(reste+"");
@@ -185,13 +186,31 @@ public class VenteHandler {
 			String nom=listVentes.NomInput.getText();
 			LocalDate date1 =listVentes.Date1Input.getValue();
 			LocalDate date2=listVentes.Date2Input.getValue();
-			
-			pdaoVente.searchVente(id_vente,);
-			
-			List<Vente> list=pdaoVente.getAllVente();
+			List<Vente> list=pdaoVente.searchVente(id_vente,nom,Date.valueOf(date1),Date.valueOf(date2));
 			listVentes.VenteObservableList.addAll(list);
+			System.out.println(list);
 		}
 		
+		public void displayVente() {
+			nouveauVente=new NouveauVente();
+			
+			Vente v = listVentes.VenteList.getSelectionModel().getSelectedItem();
+			long id_vente=v.getId_vente();
+			long id_client=v.getId_client();
+			String nom_client =v.getNom_client();
+			double total = v.getTotal();
+			LocalDate date = v.getDate();
+			
+			nouveauVente.numVenteInput.setText(id_vente+"");
+			nouveauVente.lblClientInput.setText(nom_client);
+			nouveauVente.dateInput.setValue(date);
+			nouveauVente.lblTotalVal.setText(total+"");
+			
+			
+			LigneCommande list=pdaoCommande.getOne(id_vente);
+			nouveauVente.commandeObservableList.addAll(list);
+			System.out.println(list);
+		}
 		
 
 

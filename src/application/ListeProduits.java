@@ -78,13 +78,7 @@ import produit.ProduitHandler;
 		Menu paimentsMenu;
 		Menu helpMenu;
 		
-//		MenuItem newProduit;
-//		MenuItem listProduits;	
-//		MenuItem newClient;
-//		MenuItem listClients;
-		MenuItem newVente;
 		MenuItem listVentes;
-		MenuItem newPaiement;
 		MenuItem listPaiements;
 		MenuItem helpItem;
 		
@@ -179,10 +173,8 @@ import produit.ProduitHandler;
 //			newClient=new MenuItem("Nouveau");
 //			listClients=new MenuItem("Liste");
 
-			newPaiement=new MenuItem("Nouveau");
 			listPaiements=new MenuItem("Liste");
 			
-			newVente=new MenuItem("Nouveau");
 			listVentes=new MenuItem("Liste");
 			
 			
@@ -191,9 +183,9 @@ import produit.ProduitHandler;
 //			produitsMenu.getItems().addAll(newProduit,listProduits);
 //			clientsMenu.getItems().addAll(newClient,listClients);
 			
-			ventesMenu.getItems().addAll(newVente,listVentes);
+			ventesMenu.getItems().addAll(listVentes);
 			
-			paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+			paimentsMenu.getItems().addAll(listPaiements);
 			
 			helpMenu.getItems().addAll(helpItem);
 			
@@ -290,7 +282,7 @@ import produit.ProduitHandler;
 		
 		public void initWindow(){
 			window.setScene(scene);
-			window.setTitle("Gestion de Magasin  -  Acceuil");
+			window.setTitle("Gestion de Magasin  -  Liste des Produits");
 			window.getIcons().add(new Image("css/logo_icon.png"));
 			window.setMaximized(true);
 			window.show();
@@ -319,10 +311,8 @@ import produit.ProduitHandler;
 //			newClient.getStyleClass().addAll("cursor");
 //			listClients.getStyleClass().addAll("cursor");
 			
-			newVente.getStyleClass().addAll("cursor");
 			listVentes.getStyleClass().addAll("cursor");
-			
-			newPaiement.getStyleClass().addAll("cursor");
+
 			listPaiements.getStyleClass().addAll("cursor");			
 
 			helpItem.getStyleClass().addAll("cursor");
@@ -395,21 +385,12 @@ import produit.ProduitHandler;
 				window.close();
 		    });
 			
-			newVente.setOnAction(event ->{
-			   nouveauVente=new NouveauVente();
-			   window.close();
-			});
-			
 			listVentes.setOnAction(event ->{
 				listeVentes =new ListeVentes();
 				window.close();
 
 			});
-			newPaiement.setOnAction(event ->{
-				nouveauPaiement=new NouveauPaiement();
-				window.close();
 
-			});
 			listPaiements.setOnAction(event ->{
 				
 

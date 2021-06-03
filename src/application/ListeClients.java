@@ -72,13 +72,7 @@ import vente.VenteHandler;
 		Menu paimentsMenu;
 		Menu helpMenu;
 		
-//		MenuItem newProduit;
-//		MenuItem listProduits;	
-//		MenuItem newClient;
-//		MenuItem listClients;
-		MenuItem newVente;
 		MenuItem listVentes;
-		MenuItem newPaiement;
 		MenuItem listPaiements;
 		MenuItem helpItem;
 		
@@ -167,33 +161,22 @@ import vente.VenteHandler;
 			
 			menuBar.getMenus().addAll(produitsMenu,clientsMenu,ventesMenu,paimentsMenu,helpMenu);
 			
-			
-//			newProduit=new MenuItem("Nouveau");
-//			listProduits=new MenuItem("Liste");
-//			
-//			newClient=new MenuItem("Nouveau");
-//			listClients=new MenuItem("Liste");
-
-			newVente=new MenuItem("Nouveau");
 			listVentes=new MenuItem("Liste");
 
-			newPaiement=new MenuItem("Nouveau");
 			listPaiements=new MenuItem("Liste");
 
 			
 			helpItem=new MenuItem("?");
-			
-//			produitsMenu.getItems().addAll(newProduit,listProduits);
-//			clientsMenu.getItems().addAll(newClient,listClients);
 
-			ventesMenu.getItems().addAll(newVente,listVentes);
+
+			ventesMenu.getItems().addAll(listVentes);
 				
-			paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+			paimentsMenu.getItems().addAll(listPaiements);
 
 			helpMenu.getItems().addAll(helpItem);
 			
 			
-			lblTitle = new Label("Gestion des Produits");
+			lblTitle = new Label("Gestion des Clients");
 			
 			lblCopyright= new Label("Copyright © 2021, Gestion Magasin");
 			
@@ -313,16 +296,9 @@ import vente.VenteHandler;
 			Paiments.getStyleClass().addAll("textWhite","cursor");
 			Help.getStyleClass().addAll("textWhite","cursor");
 			
-//			newProduit.getStyleClass().addAll("cursor");
-//			listProduits.getStyleClass().addAll("cursor");
-//			
-//			newClient.getStyleClass().addAll("cursor");
-//			listClients.getStyleClass().addAll("cursor");
 			
-			newVente.getStyleClass().addAll("cursor");
 			listVentes.getStyleClass().addAll("cursor");
-			
-			newPaiement.getStyleClass().addAll("cursor");
+
 			listPaiements.getStyleClass().addAll("cursor");			
 
 			helpItem.getStyleClass().addAll("cursor");
@@ -373,24 +349,20 @@ import vente.VenteHandler;
 				listProduit= new ListeProduits();
 				window.close();
 		    });
-			newVente.setOnAction(event ->{
-				   nouveauVente=new NouveauVente();
-				   window.close();
-				});
 				
 				listVentes.setOnAction(event ->{
 					listeVentes =new ListeVentes();
 					window.close();
 
 				});
-				newPaiement.setOnAction(event ->{
-					nouveauPaiement=new NouveauPaiement();
-					window.close();
-
-				});
+			
 				listPaiements.setOnAction(event ->{
 					
 
+				});
+				annulerBtn.setOnAction(event ->{
+					window.close();
+					
 				});
 				
 //			newProduit.setOnAction(event ->{
@@ -413,6 +385,9 @@ import vente.VenteHandler;
 			});
 			nouveauFacture.setOnAction(event ->{
 				gestionpaiements = new NouveauPaiement();
+				gestionpaiements.lblIdClientVal.setText(lblIdClient.getText());
+				gestionpaiements.lblClientVal.setText(NomInput.getText()+" "+PrenomInput.getText());
+				gestionpaiements.numVenteList.setVisible(true);
 				window.close();
 			});
 			ajouterBtn.setOnAction(event ->{

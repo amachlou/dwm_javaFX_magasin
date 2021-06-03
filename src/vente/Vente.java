@@ -57,7 +57,6 @@ public class Vente {
 		this.nom_client = nom_client;
 	}
 	
-	
 	public Vente(long id_vente, LocalDate date, double total,long id_client) {
 		super();
 		this.id_vente = id_vente;

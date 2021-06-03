@@ -97,13 +97,7 @@ public class NouveauVente {
 	Menu paimentsMenu;
 	Menu helpMenu;
 	
-//	MenuItem newProduit;
-//	MenuItem listProduits;	
-//	MenuItem newClient;
-//	MenuItem listClients;	
-	MenuItem newVente;
 	MenuItem listVentes;
-	MenuItem newPaiement;
 	MenuItem listPaiements;
 	MenuItem helpItem;
 	
@@ -164,6 +158,7 @@ public class NouveauVente {
 	Button supprimerCmdBtn;
 	
 	Button nouveauVente;
+	Button modifierVente;
 	Button supprimerVente;
 	Button nouveauFacture;
 	Button annuler;
@@ -226,10 +221,10 @@ public class NouveauVente {
 //		newClient=new MenuItem("Nouveau");
 //		listClients=new MenuItem("Liste");
 		
-		newVente=new MenuItem("Nouveau");
+
 		listVentes=new MenuItem("Liste");
 		
-		newPaiement=new MenuItem("Nouveau");
+
 		listPaiements=new MenuItem("Liste");
 		
 		helpItem=new MenuItem("?");
@@ -237,13 +232,13 @@ public class NouveauVente {
 //		produitsMenu.getItems().addAll(newProduit,listProduits);
 //		clientsMenu.getItems().addAll(newClient,listClients);
 
-		ventesMenu.getItems().addAll(newVente,listVentes);		
-		paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+		ventesMenu.getItems().addAll(listVentes);		
+		paimentsMenu.getItems().addAll(listPaiements);
 					
 		helpMenu.getItems().addAll(helpItem);
 		
 		
-		lblTitle = new Label("Nouveau Vente");
+		lblTitle = new Label("Nouvelle Vente");
 		
 		lblCopyright= new Label("Copyright © 2021, Gestion Magasin");
 		
@@ -286,6 +281,7 @@ public class NouveauVente {
 		supprimerCmdBtn=new Button("Supprimer");
 	    
 	    nouveauVente=new Button("Enregistrer");
+	    modifierVente=new Button("Modifier");
 	    supprimerVente=new Button("Supprimer");
 		nouveauFacture=new Button("Reglement");
 		annuler=new Button("Annuler");
@@ -404,7 +400,7 @@ public class NouveauVente {
 		hboxCmdBtn.getChildren().addAll(ajouterCmdBtn,modifierCmdBtn,supprimerCmdBtn);
 		vboxRight.getChildren().addAll(grid1,grid2,hboxCmdBtn,produitList);
 		vboxLeft.getChildren().addAll(grid3,commandeList);
-		hboxActions.getChildren().addAll(nouveauVente,supprimerVente,nouveauFacture,
+		hboxActions.getChildren().addAll(nouveauVente,modifierVente,supprimerVente,nouveauFacture,
 	    annuler);
 		
 		root.getChildren().addAll(menuBar,hboxTop,hboxActions,hboxCenter,hboxBottom);
@@ -414,7 +410,7 @@ public class NouveauVente {
 	
 	public void initWindow(){
 		window.setScene(scene);
-		window.setTitle("Gestion de Magasin  -  Acceuil");
+		window.setTitle("Gestion de Magasin  -  Nouvelle Vente");
 		window.getIcons().add(new Image("css/logo_icon.png"));
 		window.setMaximized(true);
 		window.show();
@@ -448,10 +444,9 @@ public class NouveauVente {
 //		newClient.getStyleClass().addAll("cursor");
 //		listClients.getStyleClass().addAll("cursor");
 		
-		newVente.getStyleClass().addAll("cursor");
+
 		listVentes.getStyleClass().addAll("cursor");
-		
-		newPaiement.getStyleClass().addAll("cursor");
+
 		listPaiements.getStyleClass().addAll("cursor");			
 		
 		helpItem.getStyleClass().addAll("cursor");
@@ -497,6 +492,7 @@ public class NouveauVente {
 		supprimerCmdBtn.getStyleClass().addAll("fontListe","textWhite","btn","cursor");
 		
 		nouveauVente.getStyleClass().addAll("font","btn","cursor","btnAction");
+		modifierVente.getStyleClass().addAll("font","btn","cursor","btnAction");
 		supprimerVente.getStyleClass().addAll("font","btn","cursor","btnAction");
 		nouveauFacture.getStyleClass().addAll("font","btn","cursor","btnAction");
 		annuler.getStyleClass().addAll("font","btn","cursor","btnAction");
@@ -526,26 +522,10 @@ public class NouveauVente {
 			listeVentes =new ListeVentes();
 			window.close();
 		});
-		newPaiement.setOnAction(event ->{
-			nouveauPaiement=new NouveauPaiement();
-			window.close();
 
-		});
 		listPaiements.setOnAction(event ->{
 			
 		});
-//		listProduits.setOnAction(event ->{
-//			listProduit= new ListeProduits();
-//			window.close();
-//		});
-//		newClient.setOnAction(event ->{
-//			ajoutClient= new NouveauClient();
-//			window.close();
-//		});
-//		listClients.setOnAction(event ->{
-//			listClient= new ListeClients();
-//			window.close();
-//		});
 		produitList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			produitHandler.selectItemVente();
 		});
@@ -564,16 +544,31 @@ public class NouveauVente {
 		});
 		modifierCmdBtn.setOnAction(event ->{
 			commandeList.getItems().clear();
-			handler.modify();
+			handler.modifyCmd();
 
 		});
 		supprimerCmdBtn.setOnAction(event ->{
 			commandeList.getItems().clear();
-			handler.remove();
-
+			handler.removeCmd();
 		});
-		
-	
+		annulerBtn.setOnAction(event ->{
+			window.close();
+			
+		});
+		nouveauFacture.setOnAction(event ->{
+			
+			nouveauPaiement = new NouveauPaiement();
+			nouveauPaiement.lblIdClientVal.setText(id_client.getText());
+			nouveauPaiement.lblClientVal.setText(lblClientInput.getText());
+			nouveauPaiement.lblNumVenteVal.setText(numVenteInput.getText());
+			nouveauPaiement.lblDateVal.setText(dateInput.getValue().toString());
+			nouveauPaiement.lblTotalVal.setText(lblTotalVal.getText());
+			nouveauPaiement.lblResteVal.setText(lblTotalVal.getText());
+			nouveauPaiement.lblNumVenteVal.setVisible(true);
+			window.close();
+			
+		});
+
 		
 	}
 	

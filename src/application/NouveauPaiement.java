@@ -2,10 +2,16 @@ package application;
 
 import java.time.LocalDate;
 
+import Paiement.Paiement;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -54,9 +60,17 @@ public class NouveauPaiement {
 		TableColumn<Paiement,LocalDate> nomPropreColumn;
 		TableColumn<Paiement,LocalDate> banqueColumn;
 
-		TableView <Paiement> reglementList;
+		TableView <Paiement> paiementList;
 		
-
+		ListView<String> listType = new ListView<String>();
+		ObservableList<String> Typeitems =FXCollections.observableArrayList ("ESPECE","CHEQUE");
+		
+		ListView<String> listBanque = new ListView<String>();
+		ObservableList<String> Banqueitems =FXCollections.observableArrayList ("ATW","BP","CIH","BA","BB","SG");
+		
+		ObservableList<String> options = FXCollections.observableArrayList("1","5","23");
+			final ComboBox numVenteList = new ComboBox(options);
+			
 		
 		MenuBar menuBar;
 		Menu produitsMenu;
@@ -65,9 +79,7 @@ public class NouveauPaiement {
 		Menu paimentsMenu;
 		Menu helpMenu;
 		
-		MenuItem newVente;
 		MenuItem listVentes;
-		MenuItem newPaiement;
 		MenuItem listPaiements;
 		MenuItem helpItem;
 		
@@ -104,6 +116,7 @@ public class NouveauPaiement {
 		Label lblTotalPayé;
 		Label lblReste;
 		
+		Label lblIdClientVal;
 		Label lblClientVal;
 		Label lblNumVenteVal;
 		Label lblDateVal;
@@ -111,16 +124,16 @@ public class NouveauPaiement {
 		Label lblTotalPayéVal;
 		Label lblResteVal;
 		
-		Label lblNumReglement;
-		Label lblDateReglement;
+		Label lblNumPaiement;
+		Label lblDatePaiement;
 		Label lblMontant;
 		Label lblType;
 		Label lblNumCheque;
 		Label lblBanque;
 		Label lblNom;
 		
-		TextField NumReglementInput;
-		TextField DateReglementInput;
+		TextField NumPaiementInput;
+		DatePicker DatePaiementInput;
 		TextField MontantInput;
 		TextField TypeInput;
 		TextField NumChequeInput;
@@ -146,7 +159,7 @@ public class NouveauPaiement {
 			vboxLeft.setSpacing(20);
 			
 			vboxRight.setPrefWidth(450);
-			vboxRight.setPrefHeight(800);
+			vboxRight.setPrefHeight(850);
 			vboxRight.setSpacing(20);
 				
 			vboxR1.setSpacing(15);
@@ -182,30 +195,20 @@ public class NouveauPaiement {
 			menuBar.getMenus().addAll(produitsMenu,clientsMenu,ventesMenu,paimentsMenu,helpMenu);
 			
 			
-//			newProduit=new MenuItem("Nouveau");
-//			listProduits=new MenuItem("Liste");
-//			
-//			newClient=new MenuItem("Nouveau");
-//			listClients=new MenuItem("Liste");
-			;
-			newVente=new MenuItem("Nouveau");
 			listVentes=new MenuItem("Liste");
 			
-			newPaiement=new MenuItem("Nouveau");
 			listPaiements=new MenuItem("Liste");
 			
 			helpItem=new MenuItem("?");
-			
-//			produitsMenu.getItems().addAll(newProduit,listProduits);
-//			clientsMenu.getItems().addAll(newClient,listClients);
 
-			ventesMenu.getItems().addAll(newVente,listVentes);
-			paimentsMenu.getItems().addAll(newPaiement,listPaiements);
+
+			ventesMenu.getItems().addAll(listVentes);
+			paimentsMenu.getItems().addAll(listPaiements);
 			
 			helpMenu.getItems().addAll(helpItem);
 			
 			
-			lblTitle = new Label("Gestion des Produits");
+			lblTitle = new Label("Nouveau Paiement");
 			
 			lblCopyright= new Label("Copyright © 2021, Gestion Magasin");
 			
@@ -216,30 +219,31 @@ public class NouveauPaiement {
 			
 			
 			lblClient= new Label("Client: ");
-			lblNumVente= new Label("N°: ");
+			lblNumVente= new Label("N°vente: ");
 			lblDate= new Label("Date: ");
 			lblTotal= new Label("Total: ");
 			lblTotalPayé= new Label("Total payé: ");
 			lblReste= new Label("Reste: ");
 			
-			lblClientVal= new Label("Jihane");
+			lblIdClientVal=new Label("1");
+			lblClientVal= new Label("-");
 			lblNumVenteVal= new Label("1");
-			lblDateVal= new Label("1/2/2020");
-			lblTotalVal= new Label("65852");
-			lblTotalPayéVal= new Label("22502");
-			lblResteVal= new Label("40000");
+			lblDateVal= new Label("-");
+			lblTotalVal= new Label("0");
+			lblTotalPayéVal= new Label("0");
+			lblResteVal= new Label("0");
 			
 			
-			lblNumReglement=new Label("N°: ");
-			lblDateReglement=new Label("Date: ");
+			lblNumPaiement=new Label("N°: ");
+			lblDatePaiement=new Label("Date: ");
 			lblMontant=new Label("Montant: ");
 			lblType=new Label("Type: ");
 			lblNumCheque=new Label("N° chéque: ");
 			lblBanque=new Label("Banque: ");
 			lblNom=new Label("Nom: ");
 			
-			NumReglementInput= new TextField();
-			DateReglementInput= new TextField();
+			NumPaiementInput= new TextField();
+			DatePaiementInput= new DatePicker();
 			MontantInput= new TextField();
 			TypeInput= new TextField();
 			NumChequeInput= new TextField();
@@ -268,15 +272,16 @@ public class NouveauPaiement {
 			numChequeColumn.setPrefWidth(240);
 			banqueColumn.setPrefWidth(240);
 			
-			reglementList=new TableView<>();
-			reglementList.setPrefSize( 0, 800);			
-			reglementList.getColumns().addAll(numReglemntColumn,
+			paiementList=new TableView<>();
+			paiementList.setPrefSize( 0, 800);			
+			paiementList.getColumns().addAll(numReglemntColumn,
 			montantPayéColumn,dateColumn,typeColumn,numChequeColumn,nomPropreColumn,banqueColumn);
 			
 			
 			grid1.add(lblClient, 0, 0); 
 		    grid1.add(lblClientVal, 1, 0); 
 		    grid1.add(lblNumVente, 0, 1);       
+		    grid1.add(numVenteList, 1, 1);
 		    grid1.add(lblNumVenteVal, 1, 1); 
 		    grid1.add(lblDate, 0, 2);
 		    grid1.add(lblDateVal, 1, 2);
@@ -287,8 +292,20 @@ public class NouveauPaiement {
 		    grid1.add(lblReste, 0, 5);
 		    grid1.add(lblResteVal, 1, 5);
 		    grid1.setVgap(10);
-		     
+		    
+		    lblNumVenteVal.setVisible(false);
+		    numVenteList.setVisible(false);
+		    
+			listType.setItems(Typeitems);
+			listBanque.setItems(Banqueitems);
 			
+			listType.setPrefHeight(300);
+			listBanque.setPrefHeight(300);
+			
+			numVenteList.setPromptText("N°vente");
+			numVenteList.setEditable(true);			
+			numVenteList.setPrefWidth(110);
+
 		}
 		
 		private void addNodestoPane() {
@@ -299,9 +316,9 @@ public class NouveauPaiement {
 			hboxCenter.getChildren().addAll(vboxLeft,vboxRight);
 			hboxBtn.getChildren().addAll(nouveauBtn,supprimerBtn,annulerBtn);		
 			vboxRight.getChildren().addAll(vboxR1,vboxR2,ajouterBtn);
-			vboxR1.getChildren().addAll(lblNumReglement,NumReglementInput,lblDateReglement,DateReglementInput,lblMontant,MontantInput,lblType,TypeInput);
-//			vboxR2.getChildren().addAll(lblNumCheque,NumChequeInput,lblBanque,BanqueInput,lblNom,NomInput);
-			vboxLeft.getChildren().addAll(grid1,reglementList);
+			vboxR1.getChildren().addAll(lblNumPaiement,NumPaiementInput,lblDatePaiement,DatePaiementInput,lblMontant,MontantInput,lblType,listType);
+			vboxR2.getChildren().addAll(lblNumCheque,NumChequeInput,lblBanque,listBanque,lblNom,NomInput);
+			vboxLeft.getChildren().addAll(grid1,paiementList);
 			
 			root.getChildren().addAll(menuBar,hboxTop,hboxCenter,hboxBtn,hboxBottom);
 			
@@ -310,7 +327,7 @@ public class NouveauPaiement {
 		
 		public void initWindow(){
 			window.setScene(scene);
-			window.setTitle("Gestion de Magasin  -  Acceuil");
+			window.setTitle("Gestion de Magasin  -  Nouveau Paiement");
 			window.getIcons().add(new Image("css/logo_icon.png"));
 			window.setMaximized(true);
 			window.show();
@@ -337,16 +354,8 @@ public class NouveauPaiement {
 			Paiments.getStyleClass().addAll("textWhite","cursor");
 			Help.getStyleClass().addAll("textWhite","cursor");
 			
-//			newProduit.getStyleClass().addAll("cursor");
-//			listProduits.getStyleClass().addAll("cursor");
-//			
-//			newClient.getStyleClass().addAll("cursor");
-//			listClients.getStyleClass().addAll("cursor");
-			
-			newVente.getStyleClass().addAll("cursor");
 			listVentes.getStyleClass().addAll("cursor");
 			
-			newPaiement.getStyleClass().addAll("cursor");
 			listPaiements.getStyleClass().addAll("cursor");			
 	
 			
@@ -369,8 +378,8 @@ public class NouveauPaiement {
 			lblTotalPayéVal.getStyleClass().addAll("fontListe","inputFont");
 			lblResteVal.getStyleClass().addAll("fontListe","inputFont");
 			
-			lblNumReglement.getStyleClass().add("fontListe");
-			lblDateReglement.getStyleClass().add("fontListe");
+			lblNumPaiement.getStyleClass().add("fontListe");
+			lblDatePaiement.getStyleClass().add("fontListe");
 			lblMontant.getStyleClass().add("fontListe");
 			lblType.getStyleClass().add("fontListe");
 			lblNumCheque.getStyleClass().add("fontListe");
@@ -378,8 +387,8 @@ public class NouveauPaiement {
 			lblNom.getStyleClass().add("fontListe");
 			
 			
-			NumReglementInput.getStyleClass().addAll("fontListe","inputFont");
-			DateReglementInput.getStyleClass().addAll("fontListe","inputFont");
+			NumPaiementInput.getStyleClass().addAll("fontListe","inputFont");
+			DatePaiementInput.getStyleClass().addAll("fontListe","inputFont");
 			MontantInput.getStyleClass().addAll("fontListe","inputFont");
 			TypeInput.getStyleClass().addAll("fontListe","inputFont");
 			NumChequeInput.getStyleClass().addAll("fontListe","inputFont");
@@ -395,6 +404,10 @@ public class NouveauPaiement {
 		}
 		
 		private void addEvent() {
+			annulerBtn.setOnAction(event ->{
+				window.close();
+				
+			});
 		
 			Produits.setOnMouseClicked((mouseEvent) -> {
 				listProduit= new ListeProduits();
@@ -404,10 +417,6 @@ public class NouveauPaiement {
 				listClient= new ListeClients();
 				window.close();
 		    });
-			newVente.setOnAction(event ->{
-				   nouveauVente=new NouveauVente();
-				   window.close();
-			});
 				
 			listVentes.setOnAction(event ->{
 				listeVentes =new ListeVentes();
