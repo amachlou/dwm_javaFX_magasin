@@ -6,7 +6,7 @@ public class SingleConnection {
 
 	String db="magasin_java";
 	String user="root";
-	String pwd="root";
+	String pwd="";
 	String url="jdbc:mysql://localhost:3306/"+db;
 	
 	private static Connection connection=null;
