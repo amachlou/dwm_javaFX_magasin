@@ -1,0 +1,91 @@
+
+
+.padding2{
+	-fx-padding:0 10px 0px 10px;
+}
+
+.padding{
+	-fx-padding:10px 10px 10px 10px;
+}
+
+.hbox{
+	-fx-background-color:mediumslateblue;
+}
+
+
+
+.cursor{
+	-fx-cursor: hand;
+}
+
+
+.titleFont{
+	-fx-font-family:'Brush Script MT';
+	-fx-font-size: 30px;
+	-fx-font-weight:bold;
+	-fx-text-fill:white;
+}
+
+.font{
+	
+	-fx-font-family:'Brush Script MT';
+	-fx-font-size: 20px ;
+	-fx-text-fill:mediumslateblue;
+	-fx-font-weight:bold;
+
+}
+
+.fontListe{
+	-fx-font-family:'Brush Script MT';
+	-fx-font-size: 18px ;
+	-fx-text-fill:mediumslateblue;
+	-fx-font-weight:bold;
+}
+
+.menuStyle{
+	-fx-background-color:goldenrod;
+	-fx-font-family:'Brush Script MT';
+	-fx-font-size: 20px ;
+}
+
+.inputFont{
+	-fx-text-fill:black;
+}
+
+.textWhite{
+	-fx-text-fill:white;
+}
+
+.btn{
+	-fx-background-color:indigo;
+	-fx-text-fill:white;
+}
+
+
+.centerLeft{
+	-fx-alignment:center-left;
+}
+
+.actionColor{
+	-fx-background-color:lemonchiffon;
+}
+
+.btnAction{
+	-fx-background-color:indigo;
+}
+
+.borderBottom{
+	-fx-padding:0 0 10px 0;
+    -fx-border-width:0 0 2 0;
+    -fx-border-color: gray;
+}
+
+.border{
+	-fx-padding:5px;
+    -fx-border-width:2;
+    -fx-border-color:gainsboro;
+}
+
+
+
+
